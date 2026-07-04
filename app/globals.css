@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@source "../node_modules/react-tailwindcss-datepicker/dist/index.esm.js";
 :root {
   --background: #ffffff;
   --foreground: #171717;
