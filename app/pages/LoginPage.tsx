@@ -67,12 +67,15 @@ export default function LoginForm() {
                   : undefined
               }
             >
-              <TextBox
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                primary
-                placeholder="password"
-              />
+              <div className="relative">
+                <TextBox
+                  passwordField={true}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  primary
+                  placeholder="password"
+                />
+              </div>
             </FieldWrapper>
           )}
         </Field>
