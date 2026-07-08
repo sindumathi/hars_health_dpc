@@ -1,4 +1,4 @@
-export default function HeaderPage() {
+export default function HeaderPage({ title }: { title: string }) {
   return (
     <>
       <header className="flex gap-1 mb-20">
@@ -6,9 +6,8 @@ export default function HeaderPage() {
         <div className="absolute top-5 bottom-0 max-w-sm mt-4 max-h-3 bg-sky-500 w-[100%]"></div>
         <div className="absolute top-10 bottom-0 max-w-sm mt-4 max-h-3 bg-sky-500 px-150"></div>
         <div className="flex items-center justify-center gap-4 p-4 text-sky-800  mx-auto">
-          <div className="w-full  mx-auto text-2xl font-extrabold">
-            {" "}
-            Patient Portal
+          <div className="w-full absolute top-0 lg:static mx-auto text-2xl font-extrabold">
+            {title}
           </div>
         </div>
       </header>

@@ -34,4 +34,6 @@ function FieldWrapper({
     </div>
   );
 }
+
+function formatAck(data: string) {}
 export { formatDate, FieldWrapper };

@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
+import { useRouter, redirect } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
-import TextBox from "../components/TextBox";
-import Button from "../components/Button";
-import DatePicker from "../components/DatePicker";
-import { FieldWrapper } from "../utils/formatters";
+import TextBox from "@/src/components/TextBox";
+import Button from "@/src/components/Button";
+import DatePicker from "@/src/components/DatePicker";
+import { FieldWrapper } from "@/src/utils/formatters";
 
 interface LoginFormData {
   email: string;
@@ -13,6 +14,7 @@ interface LoginFormData {
 }
 
 export default function LoginForm() {
+  const router = useRouter();
   const { Field, handleSubmit } = useForm<LoginFormData>({
     defaultValues: {
       email: "",
@@ -21,6 +23,7 @@ export default function LoginForm() {
     },
     onSubmit: async ({ value }) => {
       console.log(value);
+      router.push("/pages/acknowledgement");
     },
   });
 

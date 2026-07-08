@@ -1,0 +1,38 @@
+[
+  {
+    "slide1": [
+      {
+        "headerText": "Patient Acknowledgment",
+        "content": "I confirm that:  I have had the opportunity to ask questions and have received satisfactory answers.I understand the information provided to me. I am voluntarily consenting to the proposed treatment or procedure.I understand that I may withdraw my consent at any time before the procedure, where medically appropriate."
+      }
+    ]
+  },
+  {
+    "slide2": [
+      {
+        "headerText": "Anesthesia Consent (if applicable)",
+        "content": "I understand:The type of anesthesia to be administered.The risks and possible complications associated with anesthesia.That the anesthesiologist has explained the procedure and answered my questions."
+      },
+      {
+        "headerText": "Blood Transfusion Consent (if applicable)",
+        "content": "I understand:A blood transfusion may be necessary. The benefits and risks of receiving blood or blood products.The available alternatives, where applicable."
+      }
+    ]
+  },
+  {
+    "slide3": [
+      {
+        "headerText": "Privacy and Confidentiality",
+        "content": "I understand: I understand that my personal and medical information will be collected, used, stored, and disclosed in accordance with applicable privacy laws and hospital policies for the purpose of providing medical care."
+      }
+    ]
+  },
+  {
+    "slide4": [
+      {
+        "headerText": "Financial Responsibility",
+        "content": "I acknowledge that: I have received information regarding estimated costs, where applicable. I am responsible for charges not covered by insurance or other payment arrangements.** I have read and understood this consent form. I voluntarily consent to the proposed treatment or procedure."
+      }
+    ]
+  }
+]
