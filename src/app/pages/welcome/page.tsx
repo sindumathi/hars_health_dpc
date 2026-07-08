@@ -14,21 +14,22 @@ export default function WelcomePage() {
       <div className=" w-full flex flex-col items-center">
         <h1 className="header-font">Patient questionnaire</h1>
 
-        <p className="description">
+        <p className="mx-auto text-center">
           Help us give you the best possible care by completing this short
           questionnaire before your appointment. It takes about 5 minutes.
         </p>
 
         <div className="info-card">
           <h3 className="sub-header-font">How we use your information?</h3>
-          <p>
+          <p className="mx-auto text-center">
             Your answers are shared only with your care team and stored securely
             in line with NHS data protection guidelines. You may request
             deletion at any time by contacting the records office.
           </p>
         </div>
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row items-start">
           <input
+            className="mt-1.5 mx-5"
             type="checkbox"
             checked={consent}
             onChange={(e) => setConsent((prev) => !prev)}
