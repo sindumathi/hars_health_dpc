@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { useRouter, redirect } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
-import TextBox from "@/src/components/TextBox";
-import Button from "@/src/components/Button";
-import DatePicker from "@/src/components/DatePicker";
+import TextBox from "@/src/components/uiComponents/TextBox";
+import Button from "@/src/components/uiComponents/Button";
+import DatePicker from "@/src/components/uiComponents/DatePicker";
 import { FieldWrapper } from "@/src/utils/formatters";
 
 interface LoginFormData {
@@ -42,7 +42,7 @@ export default function LoginForm() {
               label="Username"
               value={field.state.value}
               onChange={(e) => field.handleChange(e.target.value)}
-              primary
+              variant={"primary"}
               placeholder="username"
             />
           )}
@@ -75,7 +75,7 @@ export default function LoginForm() {
                   passwordField={true}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  primary
+                  variant={"primary"}
                   placeholder="password"
                 />
               </div>
@@ -86,19 +86,15 @@ export default function LoginForm() {
         <Field name="dateOfBirth">
           {(field) => (
             <DatePicker
-              mode="single"
+              field={field}
               label="Date of birth"
               value={field.state.value}
-              onChange={(date) => {
-                field.handleChange(date);
-                field.handleBlur();
-              }}
             />
           )}
         </Field>
 
         <div className="flex items-center justify-center">
-          <Button primary onClick={handleSubmit}>
+          <Button variant={"primary"} onClick={handleSubmit}>
             Login
           </Button>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import ackData from "@/src/data/acknowldgement.json";
-import SwiperCarousel from "@/src/components/Swiper";
+import SwiperCarousel from "@/src/components/uiComponents/Swiper";
 import { useState } from "react";
 
 export default function UserAckPage() {

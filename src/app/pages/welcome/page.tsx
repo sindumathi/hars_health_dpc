@@ -1,13 +1,18 @@
 "use client";
 import { BsClipboardHeartFill } from "react-icons/bs";
 import { useState } from "react";
-import Button from "@/src/components/Button";
+import Button from "@/src/components/uiComponents/Button";
+import { useRouter } from "next/navigation";
 export default function WelcomePage() {
+  const router = useRouter();
   const [consent, setConsent] = useState(false);
   const handleDeclineClick = () => {};
-  const handleAcceptClick = () => {};
+  const handleAcceptClick = (e) => {
+    e.preventDefault();
+    router.push("/pages/questionnaire");
+  };
   return (
-    <div className="w-full flex flex-col md:w-3/4 mx-auto px-4">
+    <div>
       <div className="w-full flex items-center justify-center ">
         <BsClipboardHeartFill className="  size-20 text-sky-800  text-center  font-bold" />
       </div>
@@ -39,11 +44,15 @@ export default function WelcomePage() {
             used for my care.
           </span>
         </div>
-        <div className="w-full flex flex-row justify-between px-60 mt-10">
+        <div className="w-full flex flex-row justify-between md:px-60 mx-auto mt-10">
           <Button warning onClick={handleDeclineClick}>
             Decline
           </Button>
-          <Button primary onClick={handleAcceptClick}>
+          <Button
+            disabled={!consent}
+            variant={consent ? "primary" : "secondary"}
+            onClick={(e) => handleAcceptClick(e)}
+          >
             Continue
           </Button>
         </div>

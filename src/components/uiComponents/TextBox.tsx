@@ -1,3 +1,4 @@
+"use client";
 import classNames from "classnames";
 import { useState } from "react";
 import { HiOutlineEye } from "react-icons/hi";
@@ -7,12 +8,14 @@ interface TextBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   primary?: boolean;
   normal?: boolean;
   passwordField?: boolean;
+  variant?: string;
 }
 
 const TextBox = function (props: TextBoxProps) {
   const {
     label,
     primary,
+    variant,
     normal,
     passwordField,
     className = "",
@@ -23,9 +26,9 @@ const TextBox = function (props: TextBoxProps) {
   const handleChange = () => {};
   const inputClassNames = classNames("w-full ", `${className}`, {
     "rounded-md border border-gray-300 px-3 py-2 text-sm text-neutral-900":
-      normal,
+      normal || variant === "normal",
     "rounded-lg border border-gray-300 px-4 py-2 transition focus:border-blue-300 focus:ring-1 focus:ring-blue-200 focus:placeholder-transparent":
-      primary,
+      primary || variant === "primary",
   });
   const handlePasswordDisplay = () => {
     setShowPassword((prev: boolean) => !prev);

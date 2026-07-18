@@ -14,11 +14,13 @@ interface ButtonProps extends Omit<
   danger?: boolean;
   outline?: boolean;
   rounded?: boolean;
+  variant?: string;
 }
 
 export default function Button(props: ButtonProps) {
   const {
     children,
+    variant,
     primary,
     secondary,
     success,
@@ -31,10 +33,12 @@ export default function Button(props: ButtonProps) {
   const finalClassNames = classNames(
     "flex items-center px-3 py-1.5 border cursor-pointer",
     {
-      "border-blue-500 bg-sky-800 text-white rounded-md": primary,
-      "border-gray-500 bg-gray-500 text-white": secondary,
-      "border-green-500 bg-green-500 text-white": success,
-      "border-yellow-500 bg-yellow-500 text-white": warning,
+      "border-blue-500 bg-sky-800 text-white ":
+        primary || variant === "primary",
+      "border-gray-500 bg-gray-500 text-white ":
+        secondary || variant === "secondary",
+      "border-green-500 bg-blue-500 text-white ": success,
+      "border-yellow-500 bg-yellow-500 text-white ": warning,
       "border-red-500 bg-red-500 text-white": danger,
       "!text-blue-500": outline && primary,
       "!text-gray-900": outline && secondary,
