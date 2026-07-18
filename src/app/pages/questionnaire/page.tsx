@@ -1,26 +1,14 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Pattern } from "@/src/components/uiComponents/Stepper";
 import { useForm } from "@tanstack/react-form";
 import { steps } from "@/src/data/steps";
 import QuestionnaireNavigation from "./QuestionnaireNavigation";
-import type { RootState, AppDispatch } from "@/src/features/redux/store";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
-
 import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
-import { EmergencyContactInfoProps } from "@/src/features/types/patientRegistrationState.type";
-import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
-import { RegistrationStepProps } from "@/src/features/types/patientRegistrationState.type";
-import { current } from "immer";
 
-type formPropType = {
-  form: ReturnType<typeof useForm<any>>;
-};
-//
 export default function Questionnaire() {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const selector = useAppSelector((state) => {
     console.log("STATE IN REDUCER:", state);
   });

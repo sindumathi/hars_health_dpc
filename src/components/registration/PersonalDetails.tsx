@@ -2,10 +2,7 @@
 
 import TextBox from "../uiComponents/TextBox";
 import SelectBox from "../uiComponents/Select";
-import { FormApi } from "@tanstack/react-form";
 import { genderData } from "../../data/selectData";
-import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
-import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
 import DatePicker from "../uiComponents/DatePicker";
 
 export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {

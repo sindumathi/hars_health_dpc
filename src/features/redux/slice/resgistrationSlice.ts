@@ -17,8 +17,6 @@ const registrationSlice = createSlice({
   initialState: initialRegistrationState,
   reducers: {
     createPatientUserProfile: (state, action) => {
-      console.log("STATE", state);
-      console.log("PAYLOAD", action);
       Object.assign(state, action.payload);
     },
   },
