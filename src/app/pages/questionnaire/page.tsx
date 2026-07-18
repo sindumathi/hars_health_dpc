@@ -6,18 +6,20 @@ import { steps } from "@/src/data/steps";
 import QuestionnaireNavigation from "./QuestionnaireNavigation";
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
 import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
-
+import { useFormDefaultValues } from "./formHookDefaultValues";
+import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
+export type questionnaireForm = ReturnType<typeof useForm>;
 export default function Questionnaire() {
   const dispatch = useAppDispatch();
-  const selector = useAppSelector((state) => {
-    console.log("STATE IN REDUCER:", state);
-  });
-  console.log("SELECTOR", selector);
+  const { personalDetailsDefaultValue } = useFormDefaultValues();
+  console.log("personalDetailsDefaultValue", personalDetailsDefaultValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState<number>(2);
   const totalSteps: number = steps.length;
   const form = useForm({
-    defaultValues: {},
+    defaultValues: {
+      ...personalDetailsDefaultValue,
+    } as PatientRegistrationState,
     onSubmit: async ({ value }) => {
       setIsSubmitting(true);
       try {

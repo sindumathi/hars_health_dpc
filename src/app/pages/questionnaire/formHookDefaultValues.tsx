@@ -1,28 +1,38 @@
-const PersonalDetailsDefaultValue = {
-  firstName: "",
-  lastName: "",
-  dateOfBirth: "",
-  gender: "",
-  patientId: "",
-  phoneNumber: "",
-  emergencyContact: [],
-};
+import { useAppSelector } from "@/src/features/redux/hooks";
 
-const MedicalHistoryDefaultValue = {
-  existingConditions: [],
-  allergies: [],
-  medications: [],
-};
+export const useFormDefaultValues = () => {
+  const userData = useAppSelector((state) => state.registration);
+  const personalDetailsDefaultValue = {
+    firstName: userData.firstName || "",
+    lastName: userData.lastName || "",
+    dateOfBirth: userData.dateOfBirth || "",
+    gender: userData.gender || "",
+    patientId: userData.patientId || "",
+    phoneNumber: userData.dateOfBirth || "",
+    emergencyContact: userData.emergencyContact || [],
+  };
 
-const QuestionDefaultValue = {
-  questionId: "",
-  selectedOption: [],
-};
+  const medicalHistoryDefaultValue = {
+    existingConditions: [],
+    allergies: [],
+    medications: [],
+  };
 
-const SymptomsChecker = {
-  bodyPart: "",
-  painSeverity: "",
-  painDuration: "",
-  symptoms: "",
+  const questionDefaultValue = {
+    questionId: "",
+    selectedOption: [],
+  };
+
+  const symptomsChecker = {
+    bodyPart: "",
+    painSeverity: "",
+    painDuration: "",
+    symptoms: "",
+  };
+  return {
+    personalDetailsDefaultValue,
+    medicalHistoryDefaultValue,
+    questionDefaultValue,
+    symptomsChecker,
+  };
 };
-export * from "./formHookDefaultValues";

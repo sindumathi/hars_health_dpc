@@ -4,8 +4,12 @@ import TextBox from "../uiComponents/TextBox";
 import SelectBox from "../uiComponents/Select";
 import { genderData } from "../../data/selectData";
 import DatePicker from "../uiComponents/DatePicker";
+import type { AnyFieldApi } from "@tanstack/react-form";
+import { ReactFormApi } from "@tanstack/react-form";
+import { ReactFormExtendedApi } from "@tanstack/react-form";
+import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
 
-export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
+export default function PersonalDetails({ form }) {
   const { Field } = form;
 
   return (
@@ -14,7 +18,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
       <p className="text-gray-400 text-sm">Required fields are marked with *</p>
       <div className="grid grid-cols-2 gap-6 m-4">
         <Field name={`firstName`} validators={{}}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <TextBox
               label="First Name *"
               value={field.state.value}
@@ -25,7 +29,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
           )}
         </Field>
         <Field name={`lastName`} validators={{}}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <TextBox
               label="Last Name *"
               value={field.state.value}
@@ -36,7 +40,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
           )}
         </Field>
         <Field name={`phoneNumber`} validators={{}}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <TextBox
               label="Phone Number *"
               value={field.state.value}
@@ -47,7 +51,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
           )}
         </Field>
         <Field name={`patientId`} validators={{}}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <TextBox
               label="Patient Id *"
               value={field.state.value}
@@ -59,7 +63,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
         </Field>
 
         <Field name={`dateOfBirth`}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <DatePicker
               value={field?.state?.value ? field.state.value : null}
               field={field}
@@ -76,7 +80,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
           )}
         </Field>
         <Field name={`gender`}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <SelectBox
               label="Gender *"
               items={genderData}
@@ -95,7 +99,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
           name={`emergencyContact[0].emergencyContactName`}
           validators={{}}
         >
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <TextBox
               id={field.name}
               label="Contact Name"
@@ -107,7 +111,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
           )}
         </Field>
         <Field name={`emergencyContact[0].relationship`} validators={{}}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <TextBox
               id={field.name}
               label="Relationship"
@@ -119,7 +123,7 @@ export default function PersonalDetails({ form }: { form: StepFormApi<any> }) {
           )}
         </Field>
         <Field name={`emergencyContact[0].contactNumber`} validators={{}}>
-          {(field) => (
+          {(field: AnyFieldApi) => (
             <TextBox
               id={field.name}
               label="Phone Number"
