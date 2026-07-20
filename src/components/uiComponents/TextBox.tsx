@@ -23,7 +23,6 @@ const TextBox = function (props: TextBoxProps) {
     value,
   } = props;
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const handleChange = () => {};
   const inputClassNames = classNames("w-full ", `${className}`, {
     "rounded-md border border-gray-300 px-3 py-2 text-sm text-neutral-900":
       normal || variant === "normal",
@@ -40,7 +39,7 @@ const TextBox = function (props: TextBoxProps) {
       <input
         type={passwordField && showPassword ? "password" : "text"}
         className={inputClassNames}
-        onChange={handleChange}
+        onChange={onChange}
         value={value}
         {...props}
       />
@@ -58,5 +57,4 @@ const TextBox = function (props: TextBoxProps) {
   );
 };
 
-TextBox.displayName = "TextBox";
 export default TextBox;

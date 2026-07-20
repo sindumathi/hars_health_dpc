@@ -7,29 +7,46 @@ import QuestionnaireNavigation from "./QuestionnaireNavigation";
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
 import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
 import { useFormDefaultValues } from "./formHookDefaultValues";
-import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
+import {
+  PatientRegistrationState,
+  MedicalHistoryState,
+} from "@/src/features/types/patientRegistrationState.type";
 export type questionnaireForm = ReturnType<typeof useForm>;
 export default function Questionnaire() {
   const dispatch = useAppDispatch();
-  const { personalDetailsDefaultValue } = useFormDefaultValues();
+  const {
+    personalDetailsDefaultValue,
+    medicalHistoryDefaultValue,
+    questionDefaultValue,
+    symptomsChecker,
+  } = useFormDefaultValues();
   console.log("personalDetailsDefaultValue", personalDetailsDefaultValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentStep, setCurrentStep] = useState<number>(2);
+  const [currentStep, setCurrentStep] = useState<number>(3);
   const totalSteps: number = steps.length;
+  const formDefaultValue =
+    currentStep === 2
+      ? (personalDetailsDefaultValue as PatientRegistrationState)
+      : currentStep === 3
+        ? (medicalHistoryDefaultValue as MedicalHistoryState)
+        : currentStep === 4
+          ? questionDefaultValue
+          : currentStep === 5
+            ? symptomsChecker
+            : {};
+
   const form = useForm({
-    defaultValues: {
-      ...personalDetailsDefaultValue,
-    } as PatientRegistrationState,
-    onSubmit: async ({ value }) => {
-      setIsSubmitting(true);
-      try {
-        console.log(value);
-      } catch (err) {
-        alert("Save failed");
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
+    defaultValues: { ...formDefaultValue },
+    // onSubmit: async ({ value }) => {
+    //   setIsSubmitting(true);
+    //   try {
+    //     console.log(value);
+    //   } catch (err) {
+    //     alert("Save failed");
+    //   } finally {
+    //     setIsSubmitting(false);
+    //   }
+    // },
   });
 
   const handlePrevious = () => {
@@ -43,7 +60,7 @@ export default function Questionnaire() {
 
     try {
       console.log(form.state.values);
-      await dispatch(createPatientUserProfile(form.state.values));
+      // await dispatch(createPatientUserProfile(form.state.values));
     } catch (e) {
       console.error(e);
     } finally {
@@ -56,18 +73,26 @@ export default function Questionnaire() {
   };
 
   return (
-    <div className="w-full flex items-center justify-center">
-      <div className="mx-auto w-full max-w-6xl rounded-xl border bg-background p-8 shadow-sm">
-        <Pattern stepForm={form} currentStep={currentStep} />
-        <QuestionnaireNavigation
-          totalSteps={totalSteps}
-          handlePrevious={handlePrevious}
-          handleSave={handleSave}
-          handleNext={handleNext}
-          isSubmitting={isSubmitting}
-          currentStep={currentStep}
-        />
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+    >
+      <div className="w-full flex items-center justify-center">
+        <div className="mx-auto w-full max-w-6xl rounded-xl border bg-background p-8 shadow-sm">
+          <Pattern stepForm={form} currentStep={currentStep} />
+          <QuestionnaireNavigation
+            totalSteps={totalSteps}
+            handlePrevious={handlePrevious}
+            handleSave={handleSave}
+            handleNext={handleNext}
+            isSubmitting={isSubmitting}
+            currentStep={currentStep}
+          />
+        </div>
       </div>
-    </div>
+    </form>
   );
 }

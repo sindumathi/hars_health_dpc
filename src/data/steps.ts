@@ -3,8 +3,9 @@ import MedicalHistory from "@/src/components/registration/MedicalHistory";
 import PersonalDetails from "@/src/components/registration/PersonalDetails";
 import Review from "@/src/components/registration/Review";
 import SymptomsChecker from "@/src/components/registration/SymptomsChecker";
+import { RegistrationStepProps } from "../features/types/patientRegistrationState.type";
 
-export const steps = [
+export const steps: RegistrationStepProps[] = [
   {
     id: 1,
     title: "Consent",

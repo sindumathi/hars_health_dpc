@@ -1,12 +1,41 @@
+//Medical History check box data----------------------------------------
+import { ExistingConditionsData } from "@/src/features/types/patientRegistrationState.type";
+import { nanoid } from "nanoid";
 export const medicalHistoryData = [
   {
-    id: 1,
-    displayText: "Hypertension (high blood pressure)",
+    id: nanoid(),
+    conditionName: "Hypertension (high blood pressure)",
     category: "Cardiovascular",
+    isChecked: false,
   },
-  { id: 2, displayText: "Type 1 Diabetes", category: "Endocrine" },
-  { id: 3, displayText: "Type 2 Diabetes", category: "Endocrine" },
-  { id: 4, displayText: "Asthma", category: "Respiratory" },
-  { id: 5, displayText: "Heart disease", category: "Cardiovascular" },
-  { id: 6, displayText: "Thyroid disorder", category: "Endocrine" },
-];
+  {
+    id: nanoid(),
+    conditionName: "Type 1 Diabetes",
+    category: "Endocrine",
+    isChecked: false,
+  },
+  {
+    id: nanoid(),
+    conditionName: "Type 2 Diabetes",
+    category: "Endocrine",
+    isChecked: false,
+  },
+  {
+    id: nanoid(),
+    conditionName: "Asthma",
+    category: "Respiratory",
+    isChecked: false,
+  },
+  {
+    id: nanoid(),
+    conditionName: "Heart disease",
+    category: "Cardiovascular",
+    isChecked: false,
+  },
+  {
+    id: nanoid(),
+    conditionName: "Thyroid disorder",
+    category: "Endocrine",
+    isChecked: false,
+  },
+] as ExistingConditionsData[];

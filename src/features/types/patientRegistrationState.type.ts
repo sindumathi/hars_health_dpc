@@ -1,4 +1,7 @@
 import { ReactNode } from "react";
+import { ComponentType } from "react";
+
+// step : Patient information type-------------------------------
 export interface EmergencyContactInfoProps {
   emergencyContactName?: string;
   relationship?: string;
@@ -21,5 +24,24 @@ export interface RegistrationStepProps {
   title: string;
   status: "completed" | "active" | "inactive";
   formId: string;
-  component: ReactNode | null;
+  component: ReactNode | ComponentType<never> | null;
+}
+
+// step 2: Medical conditions type--------------------------------
+export type ExistingConditionsData = {
+  id: string;
+  conditionName: string;
+  category: string;
+  isChecked: boolean;
+};
+
+export type MedicationsData = {
+  medName: string;
+  medDosage: string;
+  medFrequency: string;
+};
+export interface MedicalHistoryState {
+  existingConditions: ExistingConditionsData[];
+  allergies: string[];
+  medications: MedicationsData[];
 }

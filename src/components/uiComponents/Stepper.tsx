@@ -12,9 +12,9 @@ import {
   StepperTitle,
   StepperTrigger,
 } from "@/src/components/reui/stepper";
-import { RegistrationStepProps } from "@/src/features/types/patientRegistrationState.type";
 import { CheckIcon, LoaderCircleIcon } from "lucide-react";
 import { steps } from "@/src/data/steps";
+
 type StepperProps = {
   currentStep: number;
   stepForm: any;
