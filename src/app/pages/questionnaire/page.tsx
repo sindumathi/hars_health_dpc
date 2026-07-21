@@ -23,7 +23,7 @@ export default function Questionnaire() {
   } = useFormDefaultValues();
   console.log("personalDetailsDefaultValue", personalDetailsDefaultValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentStep, setCurrentStep] = useState<number>(4);
+  const [currentStep, setCurrentStep] = useState<number>(3);
   const totalSteps: number = steps.length;
   const formDefaultValue =
     currentStep === 2

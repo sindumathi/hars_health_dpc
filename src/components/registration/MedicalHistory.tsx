@@ -50,18 +50,14 @@ export default function MedicalHistory({ form }) {
   };
 
   const displayTextFieldInTable = (field: AnyFieldApi) => {
-    return (
-      <TextBox
-        variant={"primary"}
-        value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.value)}
-      />
-    );
+    return <TextBox variant={"primary"} textField={field} />;
   };
   return (
     <div className="mx-auto p-8">
       <p className=" pb-1">
-        <h1 className="sub-header-text font-bold pb-2">Existing conditions</h1>{" "}
+        <span className="sub-header-text font-bold pb-2">
+          Existing conditions
+        </span>
         <span className="text-xs">
           Tick any conditions that apply. This helps your care team prepare.
         </span>
@@ -102,7 +98,7 @@ export default function MedicalHistory({ form }) {
                 <TextBox
                   id={field.name}
                   value={allergyInput}
-                  onChange={(e) => setAllergyInput(e.target.value)}
+                  handleChange={(e) => setAllergyInput(e.target.value)}
                   variant={"primary"}
                   placeholder=""
                 />
@@ -176,15 +172,17 @@ export default function MedicalHistory({ form }) {
                   <Button
                     variant={
                       field?.state?.value?.length <= 0 ||
-                      (medications.length > 0 &&
-                        medications[medications.length - 1].medName.length > 3)
+                      (medications &&
+                        medications?.length > 0 &&
+                        medications[medications?.length - 1].medName.length > 3)
                         ? "primary"
                         : "secondary"
                     }
                     onClick={() => handleAddMedication(field)}
                     disabled={
+                      medications &&
                       medications.length > 0 &&
-                      medications[medications.length - 1].medName.length <= 3
+                      medications[medications?.length - 1].medName.length <= 3
                     }
                   >
                     {"+ Add Medication"}

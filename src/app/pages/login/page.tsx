@@ -40,8 +40,7 @@ export default function LoginForm() {
           {(field) => (
             <TextBox
               label="Username"
-              value={field.state.value}
-              onChange={(e) => field.handleChange(e.target.value)}
+              textField={field}
               variant={"primary"}
               placeholder="username"
             />
@@ -73,8 +72,7 @@ export default function LoginForm() {
               <div className="relative">
                 <TextBox
                   passwordField={true}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  textField={field}
                   variant={"primary"}
                   placeholder="password"
                 />

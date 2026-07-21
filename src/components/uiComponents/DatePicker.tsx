@@ -54,7 +54,32 @@ export default function DatePicker({
       )}
 
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger>
+        <PopoverTrigger
+          render={(triggerProps) => (
+            <button
+              type="button"
+              {...triggerProps}
+              className={cn(
+                "w-full justify-start text-left font-normal flex items-center px-3 py-1.5 border cursor-pointer bg-white",
+                !value && "text-muted-foreground",
+              )}
+              disabled={disabled}
+              onBlur={() => field.handleBlur()}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {value ? (
+                typeof value === "string" ? (
+                  format(parseISO(value), "MM/dd/yyyy")
+                ) : (
+                  format(value, "MM/dd/yyyy")
+                )
+              ) : (
+                <span>{placeholder}</span>
+              )}
+            </button>
+          )}
+        />
+        {/* <PopoverTrigger>
           <Button
             variant="outline"
             className={cn(
@@ -75,7 +100,7 @@ export default function DatePicker({
               <span>{placeholder}</span>
             )}
           </Button>
-        </PopoverTrigger>
+        </PopoverTrigger> */}
 
         <PopoverContent className="w-auto p-0" align="start">
           <DayPicker

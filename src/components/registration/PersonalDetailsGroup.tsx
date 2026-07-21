@@ -6,6 +6,7 @@ import { genderData } from "../../data/selectData";
 import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
 import DatePicker from "../uiComponents/DatePicker";
+import { AnyFieldApi } from "@tanstack/react-form";
 export default function PersonalDetails({ form }: any) {
   const { Field } = form;
 
@@ -24,10 +25,9 @@ export default function PersonalDetails({ form }: any) {
           </p>
           <div className="grid grid-cols-2 gap-6 m-4">
             <Field name={`${group.name}.firstName`} validators={{}}>
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <TextBox
-                  label="First Name *"
-                  value={field.state.value}
+                  textField={field}
                   onChange={(e) => field.handleChange(e.target.value)}
                   variant={"primary"}
                   placeholder="First name"
@@ -35,33 +35,30 @@ export default function PersonalDetails({ form }: any) {
               )}
             </Field>
             <Field name={`${group.name}.lastName`} validators={{}}>
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <TextBox
                   label="Last Name *"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  textField={field}
                   variant={"primary"}
                   placeholder="Last name"
                 />
               )}
             </Field>
             <Field name={`${group.name}.phoneNumber`} validators={{}}>
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <TextBox
                   label="Phone Number *"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  textField={field}
                   variant={"primary"}
                   placeholder="Phone number"
                 />
               )}
             </Field>
             <Field name={`${group.name}.patientId`} validators={{}}>
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <TextBox
                   label="Patient Id *"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  textField={field}
                   variant={"primary"}
                   placeholder="Patient Id"
                 />
@@ -69,7 +66,7 @@ export default function PersonalDetails({ form }: any) {
             </Field>
 
             <Field name={`${group.name}.dateOfBirth`}>
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <DatePicker
                   value={field?.state?.value ? field.state.value : null}
                   field={field}
@@ -86,7 +83,7 @@ export default function PersonalDetails({ form }: any) {
               )}
             </Field>
             <Field name={`${group.name}.gender`}>
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <SelectBox
                   label="Gender *"
                   items={genderData}
@@ -105,12 +102,11 @@ export default function PersonalDetails({ form }: any) {
               name={`${group.name}.emergencyContact[0].emergencyContactName`}
               validators={{}}
             >
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <TextBox
                   id={field.name}
                   label="Contact Name"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  textField={field}
                   variant={"primary"}
                   placeholder="Name"
                 />
@@ -120,12 +116,11 @@ export default function PersonalDetails({ form }: any) {
               name={`${group.name}.emergencyContact[0].relationship`}
               validators={{}}
             >
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <TextBox
                   id={field.name}
                   label="Relationship"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  textField={field}
                   variant={"primary"}
                   placeholder="Relationship"
                 />
@@ -135,12 +130,11 @@ export default function PersonalDetails({ form }: any) {
               name={`${group.name}.emergencyContact[0].contactNumber`}
               validators={{}}
             >
-              {(field) => (
+              {(field: AnyFieldApi) => (
                 <TextBox
                   id={field.name}
                   label="Phone Number"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  textField={field}
                   variant={"primary"}
                   placeholder="Phone number"
                 />
