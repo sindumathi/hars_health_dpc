@@ -15,28 +15,6 @@ import { MdDelete } from "react-icons/md";
 const TABLE_HEADERS = ["Medications", "Dose", "Frequency"];
 const MEDICATION_FIELD = { medName: "", medDosage: "", medFrequency: "" };
 
-interface MedicalHistoryData {
-  id: number;
-  displayText: string;
-  category: string;
-}
-
-// export type ExistingConditionsData = {
-//   id: number;
-//   conditionName: string;
-//   category: string;
-// };
-
-// export type MedicationsData = {
-//   medName: string;
-//   medDosage: string;
-//   medFrequency: string;
-// };
-// export interface MedicalHistoryState {
-//   existingConditions: ExistingConditionsData[];
-//   allergies: string[];
-//   medications: MedicationsData[];
-// }
 export default function MedicalHistory({ form }) {
   const { Field } = form;
   const [allergyInput, setAllergyInput] = useState("");
@@ -144,13 +122,6 @@ export default function MedicalHistory({ form }) {
       <Field name="medications" mode="array">
         {(field: AnyFieldApi) => (
           <>
-            <div>
-              {console.log(
-                "stale value",
-                field?.state?.value?.length > 0 &&
-                  field?.state?.value?.at(-1).medName,
-              )}
-            </div>
             <table className="w-full border p-3 mt-4">
               <thead className="bg-gray-200">
                 <tr>

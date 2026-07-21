@@ -6,6 +6,7 @@ import { steps } from "@/src/data/steps";
 import QuestionnaireNavigation from "./QuestionnaireNavigation";
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
 import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
+import { createMedicalHistory } from "@/src/features/redux/slice/medicalHistorySlice";
 import { useFormDefaultValues } from "./formHookDefaultValues";
 import {
   PatientRegistrationState,
@@ -22,7 +23,7 @@ export default function Questionnaire() {
   } = useFormDefaultValues();
   console.log("personalDetailsDefaultValue", personalDetailsDefaultValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentStep, setCurrentStep] = useState<number>(3);
+  const [currentStep, setCurrentStep] = useState<number>(4);
   const totalSteps: number = steps.length;
   const formDefaultValue =
     currentStep === 2
@@ -59,8 +60,12 @@ export default function Questionnaire() {
     setIsSubmitting(true);
 
     try {
-      console.log(form.state.values);
-      // await dispatch(createPatientUserProfile(form.state.values));
+      console.log("final state", form.state.values);
+      if (currentStep === 2) {
+        await dispatch(createPatientUserProfile(form.state.values));
+      } else if (currentStep === 3) {
+        await dispatch(createMedicalHistory(form.state.values));
+      }
     } catch (e) {
       console.error(e);
     } finally {

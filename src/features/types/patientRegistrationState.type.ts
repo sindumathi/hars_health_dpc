@@ -45,3 +45,22 @@ export interface MedicalHistoryState {
   allergies: string[];
   medications: MedicationsData[];
 }
+
+//step3: Health Questions type------------------------------------
+export interface QuestionsState {
+  questionId: number;
+  type: "radio" | "text";
+  answerId?: string;
+  answerText?: string;
+}
+
+export interface DailyChoiceState {
+  id: number;
+  choiceName: string;
+}
+
+export interface HealthQuestionsState {
+  questions: QuestionsState[];
+  selfRating: number;
+  healthChoices: DailyChoiceState[];
+}
