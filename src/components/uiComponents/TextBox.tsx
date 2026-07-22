@@ -10,7 +10,7 @@ interface TextBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: string;
   textField?: AnyFieldApi;
   value?: string | number;
-  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange?: (value: string) => void;
 }
 
 const TextBox = function (props: TextBoxProps) {
@@ -34,11 +34,11 @@ const TextBox = function (props: TextBoxProps) {
   });
   const handleTextValueChange = (e) => {
     if (textField) {
-      textField.handleChange(e.target.value.trim());
+      textField.handleChange(e.target.value);
     } else if (handleChange) {
-      handleChange(e.target.value.trim());
+      handleChange(e.target.value);
     } else {
-      setTextValue(e.target.value.trim());
+      setTextValue(e.target.value);
     }
   };
   const handlePasswordDisplay = () => {
@@ -59,11 +59,11 @@ const TextBox = function (props: TextBoxProps) {
         className="absolute right-0  top-1/2 pr-3 -translate-y-1/2 "
         onClick={handlePasswordDisplay}
       >
-        {showPassword ? (
-          <HiOutlineEyeOff className="h-5 w-5 text-gray-400" />
-        ) : (
-          <HiOutlineEye className="h-5 w-5 text-gray-400" />
-        )}
+        {showPassword
+          ? passwordField && (
+              <HiOutlineEyeOff className="h-5 w-5 text-gray-400" />
+            )
+          : passwordField && <HiOutlineEye className="h-5 w-5 text-gray-400" />}
       </div>
     </div>
   );

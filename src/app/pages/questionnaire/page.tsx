@@ -6,12 +6,21 @@ import { steps } from "@/src/data/steps";
 import QuestionnaireNavigation from "./QuestionnaireNavigation";
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
 import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
-import { createMedicalHistory } from "@/src/features/redux/slice/medicalHistorySlice";
+import {
+  createMedicalHistory,
+  initialMedHistoryState,
+} from "@/src/features/redux/slice/medicalHistorySlice";
+import {
+  createHealthQuestion,
+  initialQuestionState,
+} from "@/src/features/redux/slice/HealthQuestionsSlice";
 import { useFormDefaultValues } from "./formHookDefaultValues";
 import {
   PatientRegistrationState,
   MedicalHistoryState,
+  HealthQuestionsState,
 } from "@/src/features/types/patientRegistrationState.type";
+
 export type questionnaireForm = ReturnType<typeof useForm>;
 export default function Questionnaire() {
   const dispatch = useAppDispatch();
@@ -21,9 +30,8 @@ export default function Questionnaire() {
     questionDefaultValue,
     symptomsChecker,
   } = useFormDefaultValues();
-  console.log("personalDetailsDefaultValue", personalDetailsDefaultValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentStep, setCurrentStep] = useState<number>(3);
+  const [currentStep, setCurrentStep] = useState<number>(2);
   const totalSteps: number = steps.length;
   const formDefaultValue =
     currentStep === 2
@@ -31,13 +39,13 @@ export default function Questionnaire() {
       : currentStep === 3
         ? (medicalHistoryDefaultValue as MedicalHistoryState)
         : currentStep === 4
-          ? questionDefaultValue
+          ? (questionDefaultValue as HealthQuestionsState)
           : currentStep === 5
             ? symptomsChecker
             : {};
 
   const form = useForm({
-    defaultValues: { ...formDefaultValue },
+    //defaultValues: { ...formDefaultValue },
     // onSubmit: async ({ value }) => {
     //   setIsSubmitting(true);
     //   try {
@@ -55,6 +63,8 @@ export default function Questionnaire() {
     setCurrentStep(currentStep - 1);
   };
 
+  const fetchUserData = () => {};
+
   const handleSave = async () => {
     console.log("HANDLE SAVE");
     setIsSubmitting(true);
@@ -62,9 +72,23 @@ export default function Questionnaire() {
     try {
       console.log("final state", form.state.values);
       if (currentStep === 2) {
-        await dispatch(createPatientUserProfile(form.state.values));
+        const userData = form?.state?.values?.personalDetails;
+        const dateData = userData?.dateOfBirth
+          ? userData?.dateOfBirth instanceof Date
+            ? userData?.dateOfBirth.toISOString()
+            : JSON.stringify(userData?.dateOfBirth)
+          : "";
+        const finalData = { ...userData, dateOfBirth: dateData };
+        console.log("finalData", finalData);
+        await dispatch(createPatientUserProfile(finalData));
       } else if (currentStep === 3) {
-        await dispatch(createMedicalHistory(form.state.values));
+        const finalData =
+          form?.state?.values?.medicalHistory || initialMedHistoryState;
+        await dispatch(createMedicalHistory(finalData));
+      } else if (currentStep === 4) {
+        const finalData =
+          form?.state?.values?.healthQuestions || initialQuestionState;
+        await dispatch(createHealthQuestion(finalData));
       }
     } catch (e) {
       console.error(e);

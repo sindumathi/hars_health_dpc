@@ -22,8 +22,7 @@ export default function LoginForm() {
       dateOfBirth: undefined,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-      router.push("/pages/acknowledgement");
+      router.push("/pages/welcome");
     },
   });
 

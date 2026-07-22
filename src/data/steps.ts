@@ -34,15 +34,15 @@ export const steps: RegistrationStepProps[] = [
     formId: "healthQuestions",
     component: HealthQuestions,
   },
+  // {
+  //   id: 5,
+  //   title: "Symptoms",
+  //   status: "inactive",
+  //   formId: "symptoms",
+  //   component: SymptomsChecker,
+  // },
   {
     id: 5,
-    title: "Symptoms",
-    status: "inactive",
-    formId: "symptoms",
-    component: SymptomsChecker,
-  },
-  {
-    id: 6,
     title: "Review",
     status: "inactive",
     formId: "review",

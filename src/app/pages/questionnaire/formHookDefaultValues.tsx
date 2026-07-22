@@ -19,8 +19,9 @@ export const useFormDefaultValues = () => {
   };
 
   const questionDefaultValue = {
-    questionId: "",
-    selectedOption: [],
+    questions: [],
+    selfRating: 0,
+    healthChoices: [],
   };
 
   const symptomsChecker = {

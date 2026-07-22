@@ -14,7 +14,7 @@ export default function PersonalDetails({ form }: any) {
     <form.FormGroup
       name="personalInfo"
       onGroupSubmit={async ({ value }) => {
-        console.log(`Submitting Step name`, value);
+        // console.log(`Submitting Step name`, value);
       }}
     >
       {(group) => (

@@ -2,13 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PatientRegistrationState } from "../../types/patientRegistrationState.type";
 
 const initialRegistrationState: PatientRegistrationState = {
-  firstName: "",
-  lastName: "",
+  firstName: " ",
+  lastName: " ",
   dateOfBirth: "",
   gender: "",
   patientId: "",
   phoneNumber: "",
-  department: "",
   emergencyContact: {},
 };
 
@@ -17,8 +16,6 @@ const registrationSlice = createSlice({
   initialState: initialRegistrationState,
   reducers: {
     createPatientUserProfile: (state, action) => {
-      console.log("State", state);
-      console.log("action", action);
       Object.assign(state, action.payload);
     },
   },

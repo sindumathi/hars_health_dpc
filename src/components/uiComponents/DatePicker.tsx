@@ -38,10 +38,6 @@ export default function DatePicker({
   maxDate,
 }: DatePickerFieldProps) {
   const [open, setOpen] = React.useState(false);
-  console.log("tupeof:", typeof value);
-  console.log("val", value);
-  //console.log("parse", parseISO(value));
-  //const value = field.state.value;
   const error = field.state.meta.errors?.[0];
   const today = new Date();
 
@@ -67,6 +63,7 @@ export default function DatePicker({
               onBlur={() => field.handleBlur()}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
+              {console.log("value", value)}
               {value ? (
                 typeof value === "string" ? (
                   format(parseISO(value), "MM/dd/yyyy")

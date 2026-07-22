@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { MedicalHistoryState } from "@/src/features/types/patientRegistrationState.type";
 
-const initialMedHistoryState: MedicalHistoryState = {
+export const initialMedHistoryState: MedicalHistoryState = {
   existingConditions: [],
   allergies: [],
   medications: [],

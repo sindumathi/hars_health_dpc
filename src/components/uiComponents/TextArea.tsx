@@ -31,9 +31,9 @@ export default function TextArea(props: TextAreaProps) {
   );
   const handleTextAreaChange = (e) => {
     if (textAreaField) {
-      textAreaField.handleChange(e.target.value.trim());
+      textAreaField.handleChange(e.target.value);
     } else {
-      setTAreaValue(e.target.value.trim());
+      setTAreaValue(e.target.value);
     }
   };
   return (

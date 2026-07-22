@@ -37,15 +37,16 @@ export default function MedicalHistory({ form }) {
     index: number,
   ) => {
     return (
-      <>
-        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center gap-2">
-          {allergy}
-          <MdOutlineClear
-            onClick={() => handleRemove(field, index)}
-            className="cursor-pointer hover:text-red-500 transition-colors duration-200"
-          />
-        </span>
-      </>
+      <span
+        key={`allergy_${index}`}
+        className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+      >
+        {allergy}
+        <MdOutlineClear
+          onClick={() => handleRemove(field, index)}
+          className="cursor-pointer hover:text-red-500 transition-colors duration-200"
+        />
+      </span>
     );
   };
 
@@ -63,7 +64,7 @@ export default function MedicalHistory({ form }) {
         </span>
       </p>
       {/* Existing conditions --------------------------------*/}
-      <Field name="existingConditions" mode="array">
+      <Field name="medicalHistory.existingConditions" mode="array">
         {(field: AnyFieldApi) => (
           <>
             {medicalHistoryData.map((condition) => (
@@ -75,6 +76,7 @@ export default function MedicalHistory({ form }) {
                   id={condition.id}
                   label={condition.conditionName}
                   field={field}
+                  outputFieldType={"ARRAYOFOBJECT"}
                 />
               </div>
             ))}
@@ -82,7 +84,7 @@ export default function MedicalHistory({ form }) {
         )}
       </Field>
       {/*Allergies---------------------------*/}
-      <Field name={`allergies`} mode="array" validators={{}}>
+      <Field name={`medicalHistory.allergies`} mode="array" validators={{}}>
         {(field: AnyFieldApi) => (
           <div className="flex flex-col  gap-2 w-full">
             <div className="sub-header-text font-bold pb-2"> Allergies</div>
@@ -98,7 +100,7 @@ export default function MedicalHistory({ form }) {
                 <TextBox
                   id={field.name}
                   value={allergyInput}
-                  handleChange={(e) => setAllergyInput(e.target.value)}
+                  handleChange={setAllergyInput}
                   variant={"primary"}
                   placeholder=""
                 />
@@ -115,7 +117,7 @@ export default function MedicalHistory({ form }) {
           </div>
         )}
       </Field>
-      <Field name="medications" mode="array">
+      <Field name="medicalHistory.medications" mode="array">
         {(field: AnyFieldApi) => (
           <>
             <table className="w-full border p-3 mt-4">
@@ -136,21 +138,27 @@ export default function MedicalHistory({ form }) {
                 {field?.state?.value?.map((_, index: number) => (
                   <tr key={`medication_row_${index}`}>
                     <td className="p-3">
-                      <Field name={`medications[${index}].medName`}>
+                      <Field
+                        name={`medicalHistory.medications[${index}].medName`}
+                      >
                         {(subField: AnyFieldApi) =>
                           displayTextFieldInTable(subField)
                         }
                       </Field>
                     </td>
                     <td className="p-3">
-                      <Field name={`medications[${index}].medDosage`}>
+                      <Field
+                        name={`medicalHistory.medications[${index}].medDosage`}
+                      >
                         {(subField: AnyFieldApi) =>
                           displayTextFieldInTable(subField)
                         }
                       </Field>
                     </td>
                     <td className="p-3">
-                      <Field name={`medications[${index}].medFrequency`}>
+                      <Field
+                        name={`medicalHistory.medications[${index}].medFrequency`}
+                      >
                         {(subField: AnyFieldApi) =>
                           displayTextFieldInTable(subField)
                         }

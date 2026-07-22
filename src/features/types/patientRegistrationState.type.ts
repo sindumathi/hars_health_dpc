@@ -61,6 +61,6 @@ export interface DailyChoiceState {
 
 export interface HealthQuestionsState {
   questions: QuestionsState[];
-  selfRating: number;
+  selfRating: number | null;
   healthChoices: DailyChoiceState[];
 }

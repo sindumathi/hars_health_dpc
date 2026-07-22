@@ -22,7 +22,11 @@ export default function PersonalDetails({ form }) {
       <h1 className="sub-header-text">Personal Details</h1>
       <p className="text-gray-400 text-sm">Required fields are marked with *</p>
       <div className="grid grid-cols-2 gap-6 m-4">
-        <Field name={`firstName`} defaultValue="" validators={{}}>
+        <Field
+          name={`personalDetails.firstName`}
+          defaultValue=""
+          validators={{}}
+        >
           {(field: AnyFieldApi) => (
             <TextBox
               label="First Name *"
@@ -32,7 +36,11 @@ export default function PersonalDetails({ form }) {
             />
           )}
         </Field>
-        <Field name={`lastName`} defaultValue="" validators={{}}>
+        <Field
+          name={`personalDetails.lastName`}
+          defaultValue=""
+          validators={{}}
+        >
           {(field: AnyFieldApi) => (
             <TextBox
               label="Last Name *"
@@ -42,7 +50,11 @@ export default function PersonalDetails({ form }) {
             />
           )}
         </Field>
-        <Field name={`phoneNumber`} defaultValue="" validators={{}}>
+        <Field
+          name={`personalDetails.phoneNumber`}
+          defaultValue=""
+          validators={{}}
+        >
           {(field: AnyFieldApi) => (
             <TextBox
               label="Phone Number *"
@@ -52,7 +64,11 @@ export default function PersonalDetails({ form }) {
             />
           )}
         </Field>
-        <Field name={`patientId`} defaultValue="" validators={{}}>
+        <Field
+          name={`personalDetails.patientId`}
+          defaultValue=""
+          validators={{}}
+        >
           {(field: AnyFieldApi) => (
             <TextBox
               label="Patient Id *"
@@ -63,7 +79,7 @@ export default function PersonalDetails({ form }) {
           )}
         </Field>
 
-        <Field name={`dateOfBirth`}>
+        <Field name={`personalDetails.dateOfBirth`}>
           {(field: AnyFieldApi) => (
             <DatePicker
               value={field?.state?.value ? field.state.value : null}
@@ -72,15 +88,10 @@ export default function PersonalDetails({ form }) {
               placeholder="Choose date"
               showTimeSelect={false} // set true for datetime
               minDate={new Date()}
-              // onChange={(date) => {
-              //   console.log(parseISO(field.state.value));
-              //   // field.handleChange(date.toISOString());
-              //   // field.handleBlur();
-              // }}
             />
           )}
         </Field>
-        <Field name={`gender`}>
+        <Field name={`personalDetails.gender`}>
           {(field: AnyFieldApi) => (
             <SelectBox
               label="Gender *"
@@ -97,7 +108,7 @@ export default function PersonalDetails({ form }) {
       </p>
       <div className="grid grid-cols-2 gap-6">
         <Field
-          name={`emergencyContact[0].emergencyContactName`}
+          name={`personalDetails.emergencyContact[0].emergencyContactName`}
           defaultValue=""
           validators={{}}
         >
@@ -112,7 +123,7 @@ export default function PersonalDetails({ form }) {
           )}
         </Field>
         <Field
-          name={`emergencyContact[0].relationship`}
+          name={`personalDetails.emergencyContact[0].relationship`}
           defaultValue=""
           validators={{}}
         >
@@ -127,7 +138,7 @@ export default function PersonalDetails({ form }) {
           )}
         </Field>
         <Field
-          name={`emergencyContact[0].contactNumber`}
+          name={`personalDetails.emergencyContact[0].contactNumber`}
           defaultValue=""
           validators={{}}
         >
