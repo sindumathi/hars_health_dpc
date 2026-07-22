@@ -44,6 +44,7 @@ const TextBox = function (props: TextBoxProps) {
   const handlePasswordDisplay = () => {
     setShowPassword((prev: boolean) => !prev);
   };
+  const handleBlur = () => {};
   return (
     <div className="flex gap-1 flex-col ">
       {label && <label className="text-sm">{label}</label>}
@@ -52,6 +53,7 @@ const TextBox = function (props: TextBoxProps) {
         type={passwordField && showPassword ? "password" : "text"}
         className={inputClassNames}
         onChange={(e) => handleTextValueChange(e)}
+        onBlur={textField ? textField.handleBlur : handleBlur}
         value={textField ? textField.state.value : value ? value : textValue}
         {...rest}
       />

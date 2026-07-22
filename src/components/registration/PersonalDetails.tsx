@@ -8,7 +8,8 @@ import type { AnyFieldApi } from "@tanstack/react-form";
 import { ReactFormApi } from "@tanstack/react-form";
 import { ReactFormExtendedApi } from "@tanstack/react-form";
 import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
-
+import { personalDetailsSchema } from "./data/validationSchema";
+import { FieldWrapper } from "@/src/utils/formatters";
 export default function PersonalDetails({ form }) {
   const { Field } = form;
 
@@ -25,64 +26,96 @@ export default function PersonalDetails({ form }) {
         <Field
           name={`personalDetails.firstName`}
           defaultValue=""
-          validators={{}}
+          validators={{ onBlur: personalDetailsSchema.shape.name }}
         >
           {(field: AnyFieldApi) => (
-            <TextBox
-              label="First Name *"
-              textField={field}
-              variant={"primary"}
-              placeholder="First name"
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length
+                  ? field.state.meta.errors[0].message
+                  : ""
+              }
+            >
+              <TextBox
+                label="First Name *"
+                textField={field}
+                variant={"primary"}
+                placeholder="First name"
+              />
+            </FieldWrapper>
           )}
         </Field>
         <Field
           name={`personalDetails.lastName`}
           defaultValue=""
-          validators={{}}
+          validators={{ onBlur: personalDetailsSchema.shape.name }}
         >
           {(field: AnyFieldApi) => (
-            <TextBox
-              label="Last Name *"
-              textField={field}
-              variant={"primary"}
-              placeholder="Last name"
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length
+                  ? field.state.meta.errors[0].message
+                  : ""
+              }
+            >
+              <TextBox
+                label="Last Name *"
+                textField={field}
+                variant={"primary"}
+                placeholder="Last name"
+              />
+            </FieldWrapper>
           )}
         </Field>
         <Field
           name={`personalDetails.phoneNumber`}
           defaultValue=""
-          validators={{}}
+          validators={{ onBlur: personalDetailsSchema.shape.phoneNumber }}
         >
           {(field: AnyFieldApi) => (
-            <TextBox
-              label="Phone Number *"
-              textField={field}
-              variant={"primary"}
-              placeholder="Phone number"
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length
+                  ? field.state.meta.errors[0].message
+                  : ""
+              }
+            >
+              <TextBox
+                label="Phone Number *"
+                textField={field}
+                variant={"primary"}
+                placeholder="Phone number"
+              />
+            </FieldWrapper>
           )}
         </Field>
         <Field
           name={`personalDetails.patientId`}
           defaultValue=""
-          validators={{}}
+          validators={{ onBlur: personalDetailsSchema.shape.patientId }}
         >
           {(field: AnyFieldApi) => (
-            <TextBox
-              label="Patient Id *"
-              textField={field}
-              variant={"primary"}
-              placeholder="Patient Id"
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length
+                  ? field.state.meta.errors[0].message
+                  : ""
+              }
+            >
+              <TextBox
+                label="Patient Id *"
+                textField={field}
+                variant={"primary"}
+                placeholder="Patient Id"
+              />
+            </FieldWrapper>
           )}
         </Field>
 
-        <Field name={`personalDetails.dateOfBirth`}>
+        <Field name={`personalDetails.dateOfBirth`} validators={{}}>
           {(field: AnyFieldApi) => (
             <DatePicker
-              value={field?.state?.value ? field.state.value : null}
+              value={field?.state?.value ? field.state.value : ""}
               field={field}
               label="Date of birth *"
               placeholder="Choose date"
@@ -91,14 +124,25 @@ export default function PersonalDetails({ form }) {
             />
           )}
         </Field>
-        <Field name={`personalDetails.gender`}>
+        <Field
+          name={`personalDetails.gender`}
+          validators={{ onBlur: personalDetailsSchema.shape.gender }}
+        >
           {(field: AnyFieldApi) => (
-            <SelectBox
-              label="Gender *"
-              items={genderData}
-              value={field.state.value}
-              onChange={field.handleChange}
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length
+                  ? field.state.meta.errors[0].message
+                  : ""
+              }
+            >
+              <SelectBox
+                label="Gender *"
+                items={genderData}
+                value={field.state.value}
+                onChange={field.handleChange}
+              />
+            </FieldWrapper>
           )}
         </Field>
       </div>
@@ -110,7 +154,6 @@ export default function PersonalDetails({ form }) {
         <Field
           name={`personalDetails.emergencyContact[0].emergencyContactName`}
           defaultValue=""
-          validators={{}}
         >
           {(field: AnyFieldApi) => (
             <TextBox
@@ -125,7 +168,6 @@ export default function PersonalDetails({ form }) {
         <Field
           name={`personalDetails.emergencyContact[0].relationship`}
           defaultValue=""
-          validators={{}}
         >
           {(field: AnyFieldApi) => (
             <TextBox
@@ -140,16 +182,24 @@ export default function PersonalDetails({ form }) {
         <Field
           name={`personalDetails.emergencyContact[0].contactNumber`}
           defaultValue=""
-          validators={{}}
+          validators={{ onBlur: personalDetailsSchema.shape.contactNumber }}
         >
           {(field: AnyFieldApi) => (
-            <TextBox
-              id={field.name}
-              label="Phone Number"
-              textField={field}
-              variant={"primary"}
-              placeholder="Phone number"
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length
+                  ? field.state.meta.errors[0].message
+                  : ""
+              }
+            >
+              <TextBox
+                id={field.name}
+                label="Phone Number"
+                textField={field}
+                variant={"primary"}
+                placeholder="Phone number"
+              />
+            </FieldWrapper>
           )}
         </Field>
       </div>
