@@ -14,6 +14,7 @@ export default function QuestionnaireNavigation(props: NavProps) {
     handlePrevious,
     handleSave,
     handleNext,
+    handleFormSubmit,
     isSubmitting,
   } = props;
   return (
@@ -26,15 +27,21 @@ export default function QuestionnaireNavigation(props: NavProps) {
         Back
       </Button>
       <div className="flex items-end gap-4">
+        {currentStep === totalSteps ? (
+          <Button variant="primary" onClick={handleFormSubmit}>
+            Submit
+          </Button>
+        ) : (
+          <Button
+            variant={"primary"}
+            onClick={handleSave}
+            //disabled={currentStep == 2}
+          >
+            Save
+          </Button>
+        )}
         <Button
-          variant={"primary"}
-          onClick={handleSave}
-          //disabled={currentStep == 2}
-        >
-          Save
-        </Button>
-        <Button
-          variant={currentStep == totalSteps ? "secondary" : "primary"}
+          variant={currentStep === totalSteps ? "secondary" : "primary"}
           onClick={handleNext}
           disabled={currentStep === totalSteps}
         >

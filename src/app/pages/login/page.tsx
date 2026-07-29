@@ -2,27 +2,52 @@
 import { useState } from "react";
 import { useRouter, redirect } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAccessToken,
+  clearAccessToken,
+} from "@/src/features/redux/slice/authSlice";
+import Axios from "@/src/features/services/axios";
 import TextBox from "@/src/components/uiComponents/TextBox";
 import Button from "@/src/components/uiComponents/Button";
 import DatePicker from "@/src/components/uiComponents/DatePicker";
 import { FieldWrapper } from "@/src/utils/formatters";
 
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
   dateOfBirth: Date | undefined;
 }
 
 export default function LoginForm() {
   const router = useRouter();
-  const { Field, handleSubmit } = useForm<LoginFormData>({
+  const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state?.auth?.accessToken);
+  console.log("state", accessToken);
+  const { Field, handleSubmit } = useForm({
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
       dateOfBirth: undefined,
     },
     onSubmit: async ({ value }) => {
-      router.push("/pages/welcome");
+      console.log("val", value);
+      // const loginData = { ...value, dateOfBirth: "1990-15-5" };
+      //  console.log("loginData", loginData);
+      // // const sampleData = {
+      //   username: "jane_smith",
+      //   password: "mypassword",
+      //   date_of_birth: "1985-11-22",
+      // };
+      try {
+        // const response = await Axios.post("/login", sampleData);
+        // const data = response?.data?.accessToken;
+        // console.log("DATA", data);
+        // dispatch(setAccessToken(data));
+        router.push("/pages/welcome");
+      } catch (error) {
+        console.log("Login failed", error);
+      }
     },
   });
 
@@ -35,7 +60,7 @@ export default function LoginForm() {
           handleSubmit();
         }}
       >
-        <Field name="email" validators={{}}>
+        <Field name="username" validators={{}}>
           {(field) => (
             <TextBox
               label="Username"

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Pattern } from "@/src/components/uiComponents/Stepper";
 import { useForm } from "@tanstack/react-form";
+import { useRouter, redirect } from "next/navigation";
 import { steps } from "@/src/data/steps";
 import QuestionnaireNavigation from "./QuestionnaireNavigation";
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
@@ -24,6 +25,7 @@ import {
 export type questionnaireForm = ReturnType<typeof useForm>;
 export default function Questionnaire() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const {
     personalDetailsDefaultValue,
     medicalHistoryDefaultValue,
@@ -64,6 +66,10 @@ export default function Questionnaire() {
   };
 
   const fetchUserData = () => {};
+  const handleFormSubmit = () => {
+    console.log("final data", form.state.values);
+    router.push("/pages/profile");
+  };
 
   const handleSave = async () => {
     console.log("HANDLE SAVE");
@@ -118,6 +124,7 @@ export default function Questionnaire() {
             handleSave={handleSave}
             handleNext={handleNext}
             isSubmitting={isSubmitting}
+            handleFormSubmit={handleFormSubmit}
             currentStep={currentStep}
           />
         </div>
