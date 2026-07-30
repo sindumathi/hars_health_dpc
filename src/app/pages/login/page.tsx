@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter, redirect } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setAccessToken,
   clearAccessToken,
@@ -12,6 +12,7 @@ import TextBox from "@/src/components/uiComponents/TextBox";
 import Button from "@/src/components/uiComponents/Button";
 import DatePicker from "@/src/components/uiComponents/DatePicker";
 import { FieldWrapper } from "@/src/utils/formatters";
+import { useAppSelector } from "@/src/features/redux/hooks";
 
 interface LoginFormData {
   username: string;
@@ -22,7 +23,7 @@ interface LoginFormData {
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state?.auth?.accessToken);
+  const accessToken = useAppSelector((state) => state?.auth?.accessToken);
   console.log("state", accessToken);
   const { Field, handleSubmit } = useForm({
     defaultValues: {

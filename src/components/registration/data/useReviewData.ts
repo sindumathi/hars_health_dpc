@@ -1,11 +1,11 @@
 "use client";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/src/features/redux/hooks";
 import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
 
 export default function useReviewData() {
-  const registration = useSelector((state) => state?.registration);
-  const medHistory = useSelector((state) => state?.medHistory);
-  const healthQuestions = useSelector((state) => state?.healthQuestions);
+  const registration = useAppSelector((state) => state?.registration);
+  const medHistory = useAppSelector((state) => state?.medHistory);
+  const healthQuestions = useAppSelector((state) => state?.healthQuestions);
   console.log("registration", registration);
   console.log("medhistory", medHistory);
   const personalData = [
