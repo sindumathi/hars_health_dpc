@@ -14,12 +14,18 @@ import DatePicker from "@/src/components/uiComponents/DatePicker";
 import { FieldWrapper } from "@/src/utils/formatters";
 import { useAppSelector } from "@/src/features/redux/hooks";
 
+import { z } from "zod";
+
 interface LoginFormData {
   username: string;
   password: string;
-  dateOfBirth: Date | undefined;
+  dateOfBirth: Date | string;
 }
-
+const dobSchema = z.object({
+  dateOfBirth: z.date({
+    error: (issue) => (issue.input === undefined ? "Required" : "Invalid date"),
+  }),
+});
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -29,7 +35,7 @@ export default function LoginForm() {
     defaultValues: {
       username: "",
       password: "",
-      dateOfBirth: undefined,
+      dateOfBirth: "",
     },
     onSubmit: async ({ value }) => {
       console.log("val", value);
@@ -61,58 +67,91 @@ export default function LoginForm() {
           handleSubmit();
         }}
       >
-        <Field name="username" validators={{}}>
+        <Field
+          name="username"
+          validators={{
+            onChange: z
+              .string()
+              .trim()
+              .min(1, "Username cant be empty")
+              .min(2, "Minimum 2 characters"),
+          }}
+        >
           {(field) => (
-            <TextBox
-              label="Username"
-              textField={field}
-              variant={"primary"}
-              placeholder="username"
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length > 0
+                  ? field.state.meta.errors[0]?.message
+                  : undefined
+              }
+            >
+              <TextBox
+                label="Username"
+                textField={field}
+                variant={"primary"}
+                placeholder="username"
+              />
+            </FieldWrapper>
           )}
         </Field>
 
         <Field
           name="password"
           validators={{
-            onChange: ({ value }) => {
-              if (!value) return "Password is required";
-              if (value.length < 8) return "At least 8 characters";
-              if (!/[A-Z]/.test(value))
-                return "Include at least one uppercase letter";
-              if (!/[0-9]/.test(value)) return "Include at least one number";
-              return undefined;
-            },
+            onChange: z
+              .string()
+              .trim()
+              .min(1, "Password cant be empty")
+              .min(8, "Password is too short")
+              .refine(
+                (val) => /^(?=.*\d)(?=.*[A-Z]).+$/.test(val),
+                "Include atleast one number and uppercase letter",
+              ),
           }}
         >
           {(field) => (
-            <FieldWrapper
-              label="Password"
-              error={
-                field.state.meta.isTouched && field.state.meta.errors.length
-                  ? String(field.state.meta.errors[0])
-                  : undefined
-              }
-            >
-              <div className="relative">
+            <div className="relative">
+              <FieldWrapper
+                label="Password"
+                error={
+                  field.state.meta.isTouched &&
+                  field.state.meta.errors.length > 0
+                    ? field.state.meta.errors[0]?.message
+                    : undefined
+                }
+              >
                 <TextBox
                   passwordField={true}
                   textField={field}
                   variant={"primary"}
                   placeholder="password"
                 />
-              </div>
-            </FieldWrapper>
+              </FieldWrapper>
+            </div>
           )}
         </Field>
 
-        <Field name="dateOfBirth">
+        <Field
+          name="dateOfBirth"
+          validators={{
+            onSubmit: ({ value }) =>
+              !value ? "Date cannot be empty" : undefined,
+          }}
+        >
           {(field) => (
-            <DatePicker
-              field={field}
-              label="Date of birth"
-              value={field.state.value}
-            />
+            <FieldWrapper
+              error={
+                field.state.meta.isTouched && field.state.meta.errors.length > 0
+                  ? field.state.meta.errors[0]
+                  : undefined
+              }
+            >
+              <DatePicker
+                field={field}
+                label="Date of birth"
+                placeholder="Choose date"
+              />
+            </FieldWrapper>
           )}
         </Field>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { format, subYears, subDays, parseISO } from "date-fns";
+import { format, subYears, subDays } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 // import "react-day-picker/dist/style.css";
@@ -18,7 +18,7 @@ import {
 
 interface DatePickerFieldProps {
   field: FieldApi<Date | undefined, any, any, any>;
-  value?: Date | string | null;
+  value?: Date | undefined;
   label?: string;
   placeholder?: string;
   showTimeSelect?: boolean;
@@ -41,6 +41,13 @@ export default function DatePicker({
   const [open, setOpen] = React.useState(false);
   const error = field.state.meta.errors?.[0];
   const today = new Date();
+  console.log("value", value);
+  console.log("field val", field.state.value);
+  const selectedDate = value
+    ? new Date(value)
+    : field?.state?.value
+      ? new Date(field.state.value)
+      : undefined;
   const defaultClassNames = getDefaultClassNames();
   console.log("defaultClassNames", defaultClassNames);
   return (
@@ -59,46 +66,20 @@ export default function DatePicker({
               {...triggerProps}
               className={cn(
                 "w-full justify-start text-left font-normal flex items-center px-3 py-1.5 border cursor-pointer bg-white",
-                !value && "text-muted-foreground",
+                !selectedDate && "text-muted-foreground",
               )}
               disabled={disabled}
               onBlur={() => field.handleBlur()}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {value ? (
-                typeof value === "string" ? (
-                  format(parseISO(value), "MM/dd/yyyy")
-                ) : (
-                  format(value, "MM/dd/yyyy")
-                )
+              {selectedDate ? (
+                format(selectedDate, "MM/dd/yyyy")
               ) : (
                 <span>{placeholder}</span>
               )}
             </button>
           )}
         />
-        {/* <PopoverTrigger>
-          <Button
-            variant="outline"
-            className={cn(
-              "w-full justify-start text-left font-normal",
-              !value && "text-muted-foreground",
-            )}
-            disabled={disabled}
-            onBlur={() => field.handleBlur()}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {value ? (
-              typeof value === "string" ? (
-                format(parseISO(value), "MM/dd/yyyy")
-              ) : (
-                format(value, "MM/dd/yyyy")
-              )
-            ) : (
-              <span>{placeholder}</span>
-            )}
-          </Button>
-        </PopoverTrigger> */}
 
         <PopoverContent
           className="w-auto p-0 focus:outline-none focus:ring-0"
@@ -119,14 +100,15 @@ export default function DatePicker({
             navLayout="around"
             fixedWeeks
             animate
-            selected={value}
+            selected={selectedDate}
             onSelect={(date) => {
-              field.handleChange(date ?? null);
+              const dateInString = date?.toISOString();
+              const formatedDate = dateInString
+                ? format(dateInString, "MM/dd/yyyy")
+                : undefined;
+              field.handleChange(formatedDate ?? undefined);
               setOpen(false);
             }}
-            fromDate={minDate}
-            toDate={maxDate}
-            initialFocus
             disabled={[
               {
                 after: subDays(today, 1), // disables today + future
@@ -138,8 +120,6 @@ export default function DatePicker({
           />
         </PopoverContent>
       </Popover>
-
-      {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
   );
 }
