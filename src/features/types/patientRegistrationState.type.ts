@@ -15,7 +15,6 @@ export interface PatientRegistrationState {
   gender: string;
   patientId: string;
   phoneNumber: string;
-  department: string;
   emergencyContact: EmergencyContactInfoProps;
 }
 
@@ -35,7 +34,7 @@ export type ExistingConditionsData = {
   isChecked: boolean;
 };
 
-export type MedicationsData = {
+export type MedicationsDataType = {
   medName: string;
   medDosage: string;
   medFrequency: string;
@@ -43,7 +42,7 @@ export type MedicationsData = {
 export interface MedicalHistoryState {
   existingConditions: ExistingConditionsData[];
   allergies: string[];
-  medications: MedicationsData[];
+  medications: MedicationsDataType[];
 }
 
 //step3: Health Questions type------------------------------------

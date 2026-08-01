@@ -1,9 +1,9 @@
-import { AnyFieldApi } from "@tanstack/react-form";
 import { BsEmojiFrownFill } from "react-icons/bs";
 import { BsEmojiTearFill } from "react-icons/bs";
 import { BsEmojiExpressionlessFill } from "react-icons/bs";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { BsEmojiSunglassesFill } from "react-icons/bs";
+import { AnyFieldApi } from "@tanstack/react-form";
 const emotionsSlide = [
   {
     id: 1,
@@ -37,14 +37,19 @@ const emotionsSlide = [
     textColor: "text-lime-400",
   },
 ];
-export default function WellnessSlider(props) {
+
+interface WellnessSliderProps {
+  field?: AnyFieldApi;
+}
+
+export default function WellnessSlider(props: WellnessSliderProps) {
   const { field } = props;
   return emotionsSlide.map((emotion, i) => {
     return (
       <div key={i}>
         <emotion.icon
-          className={`cursor-pointer hover:text-sky-200  ${emotion.className} ${field.state.value / 2 === emotion.id ? "bg-sky-500 text-sky-300" : emotion.textColor}`}
-          onClick={() => field.handleChange(emotion.id * 2)}
+          className={`cursor-pointer hover:text-sky-200  ${emotion.className} ${field?.state?.value / 2 === emotion.id ? "bg-sky-500 text-sky-300" : emotion.textColor}`}
+          onClick={() => field?.handleChange(emotion.id * 2)}
         />{" "}
       </div>
     );

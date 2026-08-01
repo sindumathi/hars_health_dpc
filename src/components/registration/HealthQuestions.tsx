@@ -1,13 +1,14 @@
 "use client";
 import { QUESTIONS, RADIO_ANSWERS } from "@/src/data/healthQuestionsData";
-import { ReactFormApi } from "@tanstack/react-form";
 import RadioButton from "../uiComponents/RadioButton";
 import TextBox from "../uiComponents/TextBox";
 import { AnyFieldApi } from "@tanstack/react-form";
 import TextArea from "../uiComponents/TextArea";
 import { HealthQuestionsState } from "@/src/features/types/patientRegistrationState.type";
+//import { QuestionnaireForm } from "@/src/app/pages/questionnaire/page";
 import WellnessSlider from "./WellnessSlider";
 import CheckBox from "../uiComponents/CheckBox";
+import { QuestionFormType } from "./data/formType";
 const HEALTH_OPTIONS = [
   "Regular exercise (3+ times per week)",
   "Good sleep (Mostly)",
@@ -31,14 +32,14 @@ const HEALTH_OPTIONS = [
 //   selfRating: number;
 //   healthChoices: DailyChoiceState[];
 // }
-type HealthFormProps = {
-  form: ReactFormApi<HealthQuestionsState>;
+type FormProp = {
+  form: QuestionFormType;
 };
 
 const RADIO = "radio";
 const TEXT = "text";
 
-export default function HealthQuestions({ form }: HealthFormProps) {
+export default function HealthQuestions({ form }: FormProp) {
   const { Field } = form;
   return (
     <div className="m-3">
@@ -52,15 +53,17 @@ export default function HealthQuestions({ form }: HealthFormProps) {
             QUESTIONS.map((qObject, index) => (
               <div key={index}>
                 <Field
-                  name={`questions[${index}].type`}
+                  name={`healthQuestions.questions[${index}].type`}
                   defaultValue={qObject.type}
-                ></Field>
+                >
+                  {(field) => null}
+                </Field>
                 <Field
-                  name={`questions[${index}].questionId`}
+                  name={`healthQuestions.questions[${index}].questionId`}
                   key={`question_${index}`}
                   defaultValue={qObject.id}
                 >
-                  <div className="p-1">{qObject.question}</div>
+                  {(field) => <div className="p-1">{qObject.question}</div>}
                 </Field>
                 <Field name={`healthQuestions.questions[${index}].answerId`}>
                   {(subField: AnyFieldApi) =>
@@ -83,7 +86,7 @@ export default function HealthQuestions({ form }: HealthFormProps) {
         </Field>
 
         <Field name="healthQuestions.selfRating" defaultValue={null}>
-          {(field: AnyFieldApi) => (
+          {(field) => (
             <>
               <div className="text-md ">{" Rate your overall health?"}</div>
               <div className="border border-gray-300 rounded-lg shadow-md m-2 p-3">

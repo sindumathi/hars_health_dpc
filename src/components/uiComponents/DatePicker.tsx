@@ -7,7 +7,7 @@ import { DayPicker, getDefaultClassNames } from "react-day-picker";
 // import "react-day-picker/dist/style.css";
 import "react-day-picker/style.css";
 
-import { FieldApi } from "@tanstack/react-form";
+import { AnyFieldApi } from "@tanstack/react-form";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/popover";
 
 interface DatePickerFieldProps {
-  field: FieldApi<Date | undefined, any, any, any>;
+  field: AnyFieldApi;
   value?: Date | undefined;
   label?: string;
   placeholder?: string;

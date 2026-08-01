@@ -5,12 +5,19 @@ import SelectBox from "../uiComponents/Select";
 import { genderData } from "../../data/selectData";
 import DatePicker from "../uiComponents/DatePicker";
 import type { AnyFieldApi } from "@tanstack/react-form";
-import { ReactFormApi } from "@tanstack/react-form";
+//import { QuestionnaireForm } from "@/src/app/pages/questionnaire/page";
 import { ReactFormExtendedApi } from "@tanstack/react-form";
 import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
 import { personalDetailsSchema } from "./data/validationSchema";
 import { FieldWrapper } from "@/src/utils/formatters";
-export default function PersonalDetails({ form }) {
+
+import { RegistrationFormType } from "./data/formType";
+
+type FormProp = {
+  form: RegistrationFormType;
+};
+
+export default function PersonalDetails({ form }: FormProp) {
   const { Field } = form;
 
   return (
@@ -152,7 +159,7 @@ export default function PersonalDetails({ form }) {
       </p>
       <div className="grid grid-cols-2 gap-6">
         <Field
-          name={`personalDetails.emergencyContact[0].emergencyContactName`}
+          name={`personalDetails.emergencyContact.emergencyContactName`}
           defaultValue=""
         >
           {(field: AnyFieldApi) => (
@@ -166,7 +173,7 @@ export default function PersonalDetails({ form }) {
           )}
         </Field>
         <Field
-          name={`personalDetails.emergencyContact[0].relationship`}
+          name={`personalDetails.emergencyContact.relationship`}
           defaultValue=""
         >
           {(field: AnyFieldApi) => (
@@ -180,7 +187,7 @@ export default function PersonalDetails({ form }) {
           )}
         </Field>
         <Field
-          name={`personalDetails.emergencyContact[0].contactNumber`}
+          name={`personalDetails.emergencyContact.contactNumber`}
           defaultValue=""
           validators={{ onBlur: personalDetailsSchema.shape.contactNumber }}
         >

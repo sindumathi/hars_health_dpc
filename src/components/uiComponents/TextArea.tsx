@@ -1,7 +1,7 @@
 import { AnyFieldApi } from "@tanstack/react-form";
 import classNames from "classnames";
 import { useState } from "react";
-
+export type TextAreaChange = React.ChangeEvent<HTMLTextAreaElement>;
 interface TextAreaProps {
   textAreaField: AnyFieldApi;
   placeholder?: string;
@@ -9,6 +9,7 @@ interface TextAreaProps {
   variant?: string;
   className?: string;
 }
+
 export default function TextArea(props: TextAreaProps) {
   const {
     value,
@@ -29,7 +30,7 @@ export default function TextArea(props: TextAreaProps) {
         variant === "primary",
     },
   );
-  const handleTextAreaChange = (e) => {
+  const handleTextAreaChange = (e: TextAreaChange) => {
     if (textAreaField) {
       textAreaField.handleChange(e.target.value);
     } else {
@@ -43,7 +44,7 @@ export default function TextArea(props: TextAreaProps) {
         className={inputClassNames}
         value={textAreaField ? textAreaField.state.value : tAreaValue}
         onBlur={textAreaField.handleBlur}
-        onChange={(e) => handleTextAreaChange(e)}
+        onChange={handleTextAreaChange}
         placeholder={placeholder}
         {...rest}
       />

@@ -18,11 +18,11 @@ export default function useReviewData() {
     { label: "Gender", value: registration?.gender },
     {
       label: "Emergency Contact Name",
-      value: registration?.emergencyContact[0]?.emergencyContactName,
+      value: registration?.emergencyContact?.emergencyContactName,
     },
     {
       label: "Emergency Contact Number",
-      value: registration?.emergencyContact[0]?.contactNumber,
+      value: registration?.emergencyContact?.contactNumber,
     },
   ];
   const medHistoryData = [

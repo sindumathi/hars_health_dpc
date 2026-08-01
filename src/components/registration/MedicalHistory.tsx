@@ -4,8 +4,9 @@ import { AnyFieldApi } from "@tanstack/react-form";
 import { medicalHistoryData } from "@/src/data/checkBoxData";
 import {
   ExistingConditionsData,
-  MedicationsData,
+  MedicationsDataType,
 } from "@/src/features/types/patientRegistrationState.type";
+import { HistoryFormType } from "./data/formType";
 import CheckBox from "../uiComponents/CheckBox";
 import TextBox from "../uiComponents/TextBox";
 import Button from "../uiComponents/Button";
@@ -14,8 +15,10 @@ import { MdDelete } from "react-icons/md";
 
 const TABLE_HEADERS = ["Medications", "Dose", "Frequency"];
 const MEDICATION_FIELD = { medName: "", medDosage: "", medFrequency: "" };
-
-export default function MedicalHistory({ form }) {
+type FormProp = {
+  form: HistoryFormType;
+};
+export default function MedicalHistory({ form }: FormProp) {
   const { Field } = form;
   const [allergyInput, setAllergyInput] = useState("");
   const handleAddAllergies = (field: AnyFieldApi) => {
@@ -64,7 +67,7 @@ export default function MedicalHistory({ form }) {
         </span>
       </p>
       {/* Existing conditions --------------------------------*/}
-      <Field name="medicalHistory.existingConditions" mode="array">
+      <Field name={`medicalHistory.existingConditions`} mode="array">
         {(field: AnyFieldApi) => (
           <>
             {medicalHistoryData.map((condition) => (
@@ -135,48 +138,50 @@ export default function MedicalHistory({ form }) {
                 </tr>
               </thead>
               <tbody>
-                {field?.state?.value?.map((_, index: number) => (
-                  <tr key={`medication_row_${index}`}>
-                    <td className="p-3">
-                      <Field
-                        name={`medicalHistory.medications[${index}].medName`}
-                      >
-                        {(subField: AnyFieldApi) =>
-                          displayTextFieldInTable(subField)
-                        }
-                      </Field>
-                    </td>
-                    <td className="p-3">
-                      <Field
-                        name={`medicalHistory.medications[${index}].medDosage`}
-                      >
-                        {(subField: AnyFieldApi) =>
-                          displayTextFieldInTable(subField)
-                        }
-                      </Field>
-                    </td>
-                    <td className="p-3">
-                      <Field
-                        name={`medicalHistory.medications[${index}].medFrequency`}
-                      >
-                        {(subField: AnyFieldApi) =>
-                          displayTextFieldInTable(subField)
-                        }
-                      </Field>
-                    </td>
-                    <td className="p-3">
-                      <MdDelete
-                        className="text-sky-800 cursor-pointer hover:text-red-500 transition-colors duration-200"
-                        onClick={() => handleRemove(field, index)}
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {field?.state?.value?.map(
+                  (_: MedicationsDataType, index: number) => (
+                    <tr key={`medication_row_${index}`}>
+                      <td className="p-3">
+                        <Field
+                          name={`medicalHistory.medications[${index}].medName`}
+                        >
+                          {(subField: AnyFieldApi) =>
+                            displayTextFieldInTable(subField)
+                          }
+                        </Field>
+                      </td>
+                      <td className="p-3">
+                        <Field
+                          name={`medicalHistory.medications[${index}].medDosage`}
+                        >
+                          {(subField: AnyFieldApi) =>
+                            displayTextFieldInTable(subField)
+                          }
+                        </Field>
+                      </td>
+                      <td className="p-3">
+                        <Field
+                          name={`medicalHistory.medications[${index}].medFrequency`}
+                        >
+                          {(subField: AnyFieldApi) =>
+                            displayTextFieldInTable(subField)
+                          }
+                        </Field>
+                      </td>
+                      <td className="p-3">
+                        <MdDelete
+                          className="text-sky-800 cursor-pointer hover:text-red-500 transition-colors duration-200"
+                          onClick={() => handleRemove(field, index)}
+                        />
+                      </td>
+                    </tr>
+                  ),
+                )}
               </tbody>
             </table>
             <div className="mt-4">
               <form.Subscribe selector={(state) => state.values.medications}>
-                {(medications: MedicationsData[]) => (
+                {(medications) => (
                   <Button
                     variant={
                       field?.state?.value?.length <= 0 ||

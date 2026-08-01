@@ -5,6 +5,7 @@ type NavProps = {
   handlePrevious: () => void;
   handleSave: () => void;
   handleNext: () => void;
+  handleFormSubmit: () => void;
   isSubmitting?: boolean;
 };
 export default function QuestionnaireNavigation(props: NavProps) {

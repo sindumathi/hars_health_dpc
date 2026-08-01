@@ -1,13 +1,14 @@
 "use client";
 import { BsClipboardHeartFill } from "react-icons/bs";
-import { useState } from "react";
-import Button from "@/src/components/uiComponents/Button";
+import { useState, SubmitEvent, MouseEvent } from "react";
+import Button, { EventType } from "@/src/components/uiComponents/Button";
 import { useRouter } from "next/navigation";
+
 export default function WelcomePage() {
   const router = useRouter();
   const [consent, setConsent] = useState(false);
   const handleDeclineClick = () => {};
-  const handleAcceptClick = (e) => {
+  const handleAcceptClick = (e: EventType): void => {
     e.preventDefault();
     router.push("/pages/questionnaire");
   };
@@ -51,7 +52,7 @@ export default function WelcomePage() {
           <Button
             disabled={!consent}
             variant={consent ? "primary" : "secondary"}
-            onClick={(e) => handleAcceptClick(e)}
+            onClick={handleAcceptClick}
           >
             Continue
           </Button>

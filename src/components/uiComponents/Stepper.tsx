@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, ComponentType } from "react";
 import {
   Stepper,
   StepperContent,
@@ -14,15 +14,39 @@ import {
 } from "@/src/components/reui/stepper";
 import { CheckIcon, LoaderCircleIcon } from "lucide-react";
 import { steps } from "@/src/data/steps";
-
+import {
+  RegistrationFormType,
+  QuestionFormType,
+  HistoryFormType,
+  QuestionnaireFormType,
+} from "../registration/data/formType";
+import {
+  MedicalHistoryState,
+  RegistrationStepProps,
+} from "../../features/types/patientRegistrationState.type";
+import { AnyFormApi } from "@tanstack/react-form";
 type StepperProps = {
+  stepForm: AnyFormApi;
   currentStep: number;
-  stepForm: any;
 };
+
 export function Pattern(props: StepperProps) {
   const { currentStep, stepForm } = props;
   console.log("currentStep", currentStep);
-  const StepComponent = steps[currentStep - 1].component;
+  const step = steps[currentStep - 1];
+  const StepComponent = step.component as React.ComponentType<{
+    form: AnyFormApi;
+  }>;
+  // currentStep === 2
+  //   ? (step.component as React.ComponentType<{ form: RegistrationFormType }>)
+  //   : currentStep === 3
+  //     ? (step.component as React.ComponentType<{ form: MedicalHistoryState }>)
+  //     : currentStep === 4
+  //       ? (step.component as React.ComponentType<{
+  //           form: QuestionFormType;
+  //         }>)
+  //       : null;
+
   return (
     <div className="mx-auto w-full">
       <Stepper

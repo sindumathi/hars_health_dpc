@@ -6,7 +6,10 @@ import { useRouter, redirect } from "next/navigation";
 import { steps } from "@/src/data/steps";
 import QuestionnaireNavigation from "./QuestionnaireNavigation";
 import { useAppDispatch, useAppSelector } from "@/src/features/redux/hooks";
-import { createPatientUserProfile } from "@/src/features/redux/slice/resgistrationSlice";
+import {
+  createPatientUserProfile,
+  initialRegistrationState,
+} from "@/src/features/redux/slice/resgistrationSlice";
 import {
   createMedicalHistory,
   initialMedHistoryState,
@@ -21,8 +24,23 @@ import {
   MedicalHistoryState,
   HealthQuestionsState,
 } from "@/src/features/types/patientRegistrationState.type";
+import { QuestionnaireFormType } from "@/src/components/registration/data/formType";
 
-export type questionnaireForm = ReturnType<typeof useForm>;
+// export const CreateForm = () =>
+//   useForm({
+//     defaultValues: {
+//       personalDetails: {},
+//       medicalHistory: {},
+//       healthQuestions: {},
+//     },
+//   });
+
+// export type QuestionnaireForm = ReturnType<typeof CreateForm>;
+type QFormType = {
+  personalDetails: object;
+  medicalHistory: object;
+  healthQuestions: object;
+};
 export default function Questionnaire() {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -47,7 +65,12 @@ export default function Questionnaire() {
             : {};
 
   const form = useForm({
-    //defaultValues: { ...formDefaultValue },
+    // defaultValues: { ...formDefaultValue },
+    defaultValues: {
+      personalDetails: {},
+      medicalHistory: {},
+      healthQuestions: {},
+    },
     // onSubmit: async ({ value }) => {
     //   setIsSubmitting(true);
     //   try {
@@ -79,12 +102,9 @@ export default function Questionnaire() {
       console.log("final state", form.state.values);
       if (currentStep === 2) {
         const userData = form?.state?.values?.personalDetails;
-        const dateData = userData?.dateOfBirth
-          ? userData?.dateOfBirth instanceof Date
-            ? userData?.dateOfBirth.toISOString()
-            : JSON.stringify(userData?.dateOfBirth)
-          : "";
-        const finalData = { ...userData, dateOfBirth: dateData };
+
+        const finalData =
+          form?.state?.values?.personalDetails || initialRegistrationState;
         console.log("finalData", finalData);
         await dispatch(createPatientUserProfile(finalData));
       } else if (currentStep === 3) {

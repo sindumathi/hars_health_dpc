@@ -9,7 +9,7 @@ export const useFormDefaultValues = () => {
     gender: userData.gender || "",
     patientId: userData.patientId || "",
     phoneNumber: userData.dateOfBirth || "",
-    emergencyContact: userData.emergencyContact || [],
+    emergencyContact: userData.emergencyContact || {},
   };
 
   const medicalHistoryDefaultValue = {

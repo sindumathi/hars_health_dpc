@@ -1,14 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PatientRegistrationState } from "../../types/patientRegistrationState.type";
 
-const initialRegistrationState: PatientRegistrationState = {
+const emContact = {
+  emergencyContactName: "",
+  relationship: "",
+  contactNumber: "",
+};
+
+export const initialRegistrationState: PatientRegistrationState = {
   firstName: " ",
   lastName: " ",
   dateOfBirth: "",
   gender: "",
   patientId: "",
   phoneNumber: "",
-  emergencyContact: {},
+  emergencyContact: emContact,
 };
 
 const registrationSlice = createSlice({

@@ -1,11 +1,15 @@
-import { ButtonHTMLAttributes, SubmitEvent } from "react";
-import classNames from "classnames";
+import { ButtonHTMLAttributes, SubmitEvent, MouseEvent } from "react";
 
+import classNames from "classnames";
+export type EventType =
+  | React.MouseEvent<HTMLButtonElement | HTMLFormElement>
+  | React.MouseEvent<HTMLButtonElement | HTMLFormElement, MouseEvent>
+  | React.SubmitEvent<HTMLFormElement>;
 interface ButtonProps extends Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   "onClick"
 > {
-  onClick: (event: SubmitEvent<HTMLFormElement>) => void;
+  onClick: (event: EventType) => void;
   children: string;
   primary?: boolean;
   secondary?: boolean;

@@ -1,14 +1,17 @@
 import React from "react";
-import type { FieldApi } from "@tanstack/react-form";
+import type { AnyFieldApi } from "@tanstack/react-form";
+import { ExistingConditionsData } from "../../features/types/patientRegistrationState.type";
 interface CheckBoxFieldProps {
-  field: FieldApi<any, any, any, any, string>;
+  field: AnyFieldApi;
   label?: string;
   name?: string;
   id: string;
   condition?: object;
-  outputFields: [];
+  outputFields?: [];
   outputFieldType?: string;
 }
+
+type CheckboxValueType = ExistingConditionsData | string;
 export default React.memo(function CheckBox(props: CheckBoxFieldProps) {
   const {
     field,
@@ -19,7 +22,11 @@ export default React.memo(function CheckBox(props: CheckBoxFieldProps) {
     ...restProps
   } = props;
   const value = field?.state?.value || [];
-  const [checked, setChecked] = React.useState(value.includes(id));
+  const checkedValue = value.some((val: CheckboxValueType) =>
+    typeof val === "string" ? val === id : val?.id === id,
+  );
+
+  const [checked, setChecked] = React.useState(checkedValue);
 
   //const checked = value.includes(id);
   const outputDataForCheckBox = () => {
@@ -39,13 +46,23 @@ export default React.memo(function CheckBox(props: CheckBoxFieldProps) {
           onChange={(e) => {
             if (e.target.checked) {
               const data = outputDataForCheckBox();
+              console.log("checked", value);
               field.handleChange([...value, data]);
               setChecked(true);
             } else {
               if (outputFieldType === "ARRAYOFOBJECT") {
-                field.handleChange(value.filter((val) => val.id !== id));
+                console.log("arrY");
+                field.handleChange(
+                  value.filter(
+                    (val: CheckboxValueType) =>
+                      typeof val !== "string" && val?.id !== id,
+                  ),
+                );
               } else {
-                field.handleChange(value.filter((val) => val !== id));
+                console.log("what am i");
+                field.handleChange(
+                  value.filter((val: CheckboxValueType) => val !== id),
+                );
               }
               setChecked(false);
             }

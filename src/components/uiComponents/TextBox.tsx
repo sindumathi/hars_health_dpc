@@ -12,7 +12,7 @@ interface TextBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value?: string | number;
   handleChange?: (value: string) => void;
 }
-
+export type TextChangeEvent = React.ChangeEvent<HTMLInputElement>;
 const TextBox = function (props: TextBoxProps) {
   const {
     textField,
@@ -32,7 +32,7 @@ const TextBox = function (props: TextBoxProps) {
     "rounded-lg border border-gray-300 px-4 py-2 transition focus:border-blue-300 focus:ring-1 focus:ring-blue-200 focus:placeholder-transparent":
       variant === "primary",
   });
-  const handleTextValueChange = (e) => {
+  const handleTextValueChange = (e: TextChangeEvent) => {
     if (textField) {
       textField.handleChange(e.target.value);
     } else if (handleChange) {
