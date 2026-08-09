@@ -6,8 +6,6 @@ export default function useReviewData() {
   const registration = useAppSelector((state) => state?.registration);
   const medHistory = useAppSelector((state) => state?.medHistory);
   const healthQuestions = useAppSelector((state) => state?.healthQuestions);
-  console.log("registration", registration);
-  console.log("medhistory", medHistory);
   const personalData = [
     { label: "Patient Id", value: registration?.patientId },
     { label: "First Name", value: registration?.firstName },

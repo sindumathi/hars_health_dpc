@@ -25,6 +25,7 @@ import {
   HealthQuestionsState,
 } from "@/src/features/types/patientRegistrationState.type";
 import { QuestionnaireFormType } from "@/src/components/registration/data/formType";
+import Axios from "@/src/features/services/axios";
 
 // export const CreateForm = () =>
 //   useForm({
@@ -90,7 +91,7 @@ export default function Questionnaire() {
 
   const fetchUserData = () => {};
   const handleFormSubmit = () => {
-    console.log("final data", form.state.values);
+    //   console.log("final data", form.state.values);
     router.push("/pages/profile");
   };
 
@@ -99,13 +100,13 @@ export default function Questionnaire() {
     setIsSubmitting(true);
 
     try {
-      console.log("final state", form.state.values);
+      // console.log("final state", form.state.values);
       if (currentStep === 2) {
         const userData = form?.state?.values?.personalDetails;
 
         const finalData =
           form?.state?.values?.personalDetails || initialRegistrationState;
-        console.log("finalData", finalData);
+        //console.log("finalData", finalData);
         await dispatch(createPatientUserProfile(finalData));
       } else if (currentStep === 3) {
         const finalData =

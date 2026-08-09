@@ -41,15 +41,12 @@ export default function DatePicker({
   const [open, setOpen] = React.useState(false);
   const error = field.state.meta.errors?.[0];
   const today = new Date();
-  console.log("value", value);
-  console.log("field val", field.state.value);
   const selectedDate = value
     ? new Date(value)
     : field?.state?.value
       ? new Date(field.state.value)
       : undefined;
   const defaultClassNames = getDefaultClassNames();
-  console.log("defaultClassNames", defaultClassNames);
   return (
     <div className={cn("space-y-2", "flex flex-col")}>
       {label && (

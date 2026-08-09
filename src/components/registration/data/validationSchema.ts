@@ -20,7 +20,7 @@ export const personalDetailsSchema = z.object({
   gender: z
     .string()
     .min(1, "Please select a gender")
-    .refine((value) => ["Male", "Female", "Transgender"].includes(value), {
+    .refine((value) => ["male", "female", "transgender"].includes(value), {
       message: "Please select a valid gender",
     }),
 });

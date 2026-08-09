@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, redirect } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import {
   setAccessToken,
   clearAccessToken,
@@ -29,8 +29,8 @@ const dobSchema = z.object({
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const store = useStore();
   const accessToken = useAppSelector((state) => state?.auth?.accessToken);
-  console.log("state", accessToken);
   const { Field, handleSubmit } = useForm({
     defaultValues: {
       username: "",
@@ -38,19 +38,22 @@ export default function LoginForm() {
       dateOfBirth: "",
     },
     onSubmit: async ({ value }) => {
-      console.log("val", value);
       // const loginData = { ...value, dateOfBirth: "1990-15-5" };
       //  console.log("loginData", loginData);
-      // // const sampleData = {
-      //   username: "jane_smith",
-      //   password: "mypassword",
-      //   date_of_birth: "1985-11-22",
+      // const sampleData = {
+      //   username: "firstUser",
+      //   password: "firstUser123",
+      //   dateOfBirth: "08/14/1995",
       // };
       try {
-        // const response = await Axios.post("/login", sampleData);
-        // const data = response?.data?.accessToken;
-        // console.log("DATA", data);
-        // dispatch(setAccessToken(data));
+        const response = await Axios.post("/api/auth", value);
+        const data = response?.data;
+        const authData = {
+          accessToken: data?.accessToken,
+          userName: data?.userName,
+          isAuthenticated: true,
+        };
+        dispatch(setAccessToken(authData));
         router.push("/pages/welcome");
       } catch (error) {
         console.log("Login failed", error);
@@ -64,6 +67,7 @@ export default function LoginForm() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          e.stopPropagation();
           handleSubmit();
         }}
       >

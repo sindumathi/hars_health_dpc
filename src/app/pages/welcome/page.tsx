@@ -1,12 +1,15 @@
 "use client";
 import { BsClipboardHeartFill } from "react-icons/bs";
 import { useState, SubmitEvent, MouseEvent } from "react";
+import { useDispatch, useStore } from "react-redux";
 import Button, { EventType } from "@/src/components/uiComponents/Button";
 import { useRouter } from "next/navigation";
 
 export default function WelcomePage() {
   const router = useRouter();
+  const store = useStore();
   const [consent, setConsent] = useState(false);
+  const state = store.getState();
   const handleDeclineClick = () => {};
   const handleAcceptClick = (e: EventType): void => {
     e.preventDefault();

@@ -46,12 +46,10 @@ export default React.memo(function CheckBox(props: CheckBoxFieldProps) {
           onChange={(e) => {
             if (e.target.checked) {
               const data = outputDataForCheckBox();
-              console.log("checked", value);
               field.handleChange([...value, data]);
               setChecked(true);
             } else {
               if (outputFieldType === "ARRAYOFOBJECT") {
-                console.log("arrY");
                 field.handleChange(
                   value.filter(
                     (val: CheckboxValueType) =>
@@ -59,7 +57,6 @@ export default React.memo(function CheckBox(props: CheckBoxFieldProps) {
                   ),
                 );
               } else {
-                console.log("what am i");
                 field.handleChange(
                   value.filter((val: CheckboxValueType) => val !== id),
                 );

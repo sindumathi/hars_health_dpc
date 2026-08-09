@@ -32,7 +32,7 @@ type StepperProps = {
 
 export function Pattern(props: StepperProps) {
   const { currentStep, stepForm } = props;
-  console.log("currentStep", currentStep);
+  // console.log("currentStep", currentStep);
   const step = steps[currentStep - 1];
   const StepComponent = step.component as React.ComponentType<{
     form: AnyFormApi;

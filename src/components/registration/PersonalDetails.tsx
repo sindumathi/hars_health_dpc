@@ -148,6 +148,7 @@ export default function PersonalDetails({ form }: FormProp) {
                 items={genderData}
                 value={field.state.value}
                 onChange={field.handleChange}
+                name={field.name}
               />
             </FieldWrapper>
           )}
