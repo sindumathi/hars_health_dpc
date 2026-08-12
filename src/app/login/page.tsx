@@ -34,13 +34,13 @@ export default function LoginForm() {
   const dispatch = useDispatch();
   const store = useStore();
   const accessToken = useAppSelector((state) => state?.auth?.accessToken);
-  useEffect(() => {
-    if (!errorMessage) return;
-    const errorTimer = setTimeout(() => {
-      setErrorMessage("");
-    }, 4000);
-    return () => clearTimeout(errorTimer);
-  }, [errorMessage]);
+  // useEffect(() => {
+  //   if (!errorMessage) return;
+  //   const errorTimer = setTimeout(() => {
+  //     setErrorMessage("");
+  //   }, 4000);
+  //   return () => clearTimeout(errorTimer);
+  // }, [errorMessage]);
 
   const { Field, handleSubmit } = useForm({
     defaultValues: {
@@ -111,11 +111,17 @@ export default function LoginForm() {
   return (
     <div className="container *:space-y-5 min-h-100   align-middle justify-center max-w-md mx-auto px-10 border border-gray-300 rounded-lg shadow-md p-8">
       <div className="text-center pb-10 text-xl text-blue-800"> Login </div>
-      {errorMessage && (
-        <div className="text-xs whitespace-pre-line text-red-500">
-          {errorMessage}
-        </div>
-      )}
+      <div
+        className={`transition-opacity duration-300 ease-in-out ${
+          errorMessage ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {errorMessage && (
+          <div className="text-xs whitespace-pre-line text-red-500 bg-red-100 p-3">
+            {errorMessage}
+          </div>
+        )}
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
