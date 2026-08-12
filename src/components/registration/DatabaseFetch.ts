@@ -21,5 +21,8 @@ export async function fetchUniqueUser(username: string | null) {
     where: { name: username },
   });
 
-  return { name: user?.name, dateOfBirth: user?.date_of_birth };
+  return {
+    name: user?.name || " ",
+    dateOfBirth: user?.date_of_birth || formattedDate,
+  };
 }
