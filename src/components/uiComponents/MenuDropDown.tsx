@@ -20,9 +20,13 @@ export default function MenuDropdown() {
   );
   const dispatch = useAppDispatch();
   const handleLogout = async () => {
-    const response = await Axios.post("api/logout");
-    await dispatch(clearAccessToken());
-    router.push("/login");
+    try {
+      const response = await Axios.post("/api/logout");
+      await dispatch(clearAccessToken());
+      router.push("/login");
+    } catch (err) {
+      console.log("error", err);
+    }
   };
   return (
     <DropdownMenu>
