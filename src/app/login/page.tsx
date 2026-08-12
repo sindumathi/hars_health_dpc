@@ -59,7 +59,6 @@ export default function LoginForm() {
 
       if (isSignup) {
         handleSignUpSubmit(value);
-        setIsSignup(false);
       } else {
         handleLoginSubmit(value);
       }
@@ -89,7 +88,8 @@ export default function LoginForm() {
   };
 
   const handleSignupClick = () => {
-    setIsSignup(true);
+    //  e.stopPropagation();
+    setIsSignup((prev) => !prev);
   };
 
   const handleSignUpSubmit = async (value: LoginFormData) => {
@@ -97,11 +97,14 @@ export default function LoginForm() {
       const response = await Axios.post("/api/signUp", value);
       const data = response?.data;
       if (data.success === true) {
+        console.log("inside login----------------------------------------");
         handleLoginSubmit(value);
+        setIsSignup(false);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error?.response?.data?.message;
+        console.log("error------------", error);
         setErrorMessage(message);
       } else {
         console.log("Login failed", error);
@@ -111,6 +114,11 @@ export default function LoginForm() {
   return (
     <div className="container *:space-y-5 min-h-100   align-middle justify-center max-w-md mx-auto px-10 border border-gray-300 rounded-lg shadow-md p-8">
       <div className="text-center pb-10 text-xl text-blue-800"> Login </div>
+      {errorMessage && (
+        <div className="text-xs whitespace-pre-line text-red-500">
+          {errorMessage}
+        </div>
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -205,27 +213,24 @@ export default function LoginForm() {
             </FieldWrapper>
           )}
         </Field>
-        {errorMessage && (
-          <div className="text-xs whitespace-pre-line text-red-500">
-            {errorMessage}
-          </div>
-        )}
-        <div className="flex flex-row gap-4 items-center justify-center">
-          {isSignup ? (
-            <Button variant={"primary"} onClick={handleSubmit}>
-              Signup
-            </Button>
-          ) : (
-            <Button variant={"primary"} onClick={handleSubmit}>
-              Login
-            </Button>
-          )}
 
+        <div className="flex flex-row gap-4 items-center justify-center">
+          <div>
+            {isSignup ? (
+              <Button variant={"primary"} onClick={handleSubmit}>
+                Signup
+              </Button>
+            ) : (
+              <Button variant={"primary"} onClick={handleSubmit}>
+                Login
+              </Button>
+            )}
+          </div>
           <div
             className="text-md text-blue-800 cursor-pointer "
             onClick={handleSignupClick}
           >
-            Signup?
+            {isSignup ? "Login" : "Signup"}
           </div>
         </div>
         <div className="text-sm text-center cursor-pointer hover:text-blue-600 focus:outline-none focus:underline">
