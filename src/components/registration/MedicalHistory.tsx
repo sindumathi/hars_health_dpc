@@ -205,9 +205,6 @@ export default function MedicalHistory({ form }: FormProp) {
                 selector={(state) => state.values.medicalHistory.medications}
               >
                 {(medications) => {
-                  {
-                    console.log("medications", field.state);
-                  }
                   return (
                     <Button
                       variant={

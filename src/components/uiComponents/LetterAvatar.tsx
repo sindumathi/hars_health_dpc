@@ -11,7 +11,6 @@ export default function LetterAvatar(props: LetterAvatarType) {
     size === LARGE
       ? `h-10 w-10 text-2xl font-bold`
       : `h-5 w-5 text-md font-semibold`;
-  console.log("initials", initials);
   return (
     <div
       className={`flex bg-yellow-500 text-white  ${iconStyle} rounded-full justify-center items-center`}

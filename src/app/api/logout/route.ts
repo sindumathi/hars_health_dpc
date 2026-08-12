@@ -11,8 +11,18 @@ export async function POST() {
       ...cookiesDataForResponse,
       value: "",
     } as ResponseCookie);
-    return response;
+    return NextResponse.json(
+      { success: true, message: "Logged out successfully" },
+      { status: 200 },
+    );
   } catch (error) {
-    console.log("error", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Invalid request body.",
+        error: error,
+      },
+      { status: 400 },
+    );
   }
 }

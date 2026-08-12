@@ -11,7 +11,7 @@ import { ReactFormExtendedApi } from "@tanstack/react-form";
 import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
 import { personalDetailsSchema } from "./data/validationSchema";
 import { FieldWrapper } from "@/src/utils/formatters";
-import { fetchUsers } from "./DatabaseFetch";
+import { fetchUsers, fetchUniqueUser } from "./DatabaseFetch";
 
 import { RegistrationFormType } from "./data/formType";
 
@@ -23,10 +23,11 @@ export default function PersonalDetails({ form }: FormProp) {
   const { Field } = form;
   const initialuserData = { name: "", dateOfBirth: "" };
   const [user, setUser] = useState(initialuserData);
+  const authData = useAppSelector((state) => state?.auth);
   const userData = useAppSelector((state) => state.registration);
   useEffect(() => {
     const fetchUser = (async () => {
-      const user = await fetchUsers();
+      const user = await fetchUniqueUser(authData?.userName);
       setUser(user);
     })();
   }, []);

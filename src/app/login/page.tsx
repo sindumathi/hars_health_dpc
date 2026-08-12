@@ -68,7 +68,6 @@ export default function LoginForm() {
   const handleLoginSubmit = async (value: LoginFormData) => {
     try {
       const response = await Axios.post("/api/auth", value);
-      console.log("response", response);
       const data = response?.data;
       const authData = {
         accessToken: data?.accessToken,
@@ -97,14 +96,12 @@ export default function LoginForm() {
       const response = await Axios.post("/api/signUp", value);
       const data = response?.data;
       if (data.success === true) {
-        console.log("inside login----------------------------------------");
         handleLoginSubmit(value);
         setIsSignup(false);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error?.response?.data?.message;
-        console.log("error------------", error);
         setErrorMessage(message);
       } else {
         console.log("Login failed", error);

@@ -32,7 +32,7 @@ export default function EditMedicalHistory() {
     const userData = form?.state?.values?.medicalHistory;
     const finalData =
       form?.state?.values?.medicalHistory || initialMedHistoryState;
-    console.log("finalData", finalData);
+    // console.log("finalData", finalData);
     await dispatch(createMedicalHistory(finalData));
     setEditOpen(false);
   };
@@ -71,7 +71,6 @@ export default function EditMedicalHistory() {
         </div>
         <div>
           {medHistoryData.map((data, index) => {
-            console.log(data.value);
             return (
               <div
                 key={`${data.label}_${index}`}

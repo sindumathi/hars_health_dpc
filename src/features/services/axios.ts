@@ -75,9 +75,8 @@ axios.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
-    console.log("original request", originalRequest);
     if (!error.response) {
-      console.error("Network error:", error.message);
+      // console.error("Network error:", error.message);
       return Promise.reject(error);
     }
     //does not try refresh token if it is from login url
@@ -85,7 +84,7 @@ axios.interceptors.response.use(
       return Promise.reject(error);
     }
     // ----------------401------------------------------
-    console.log("error?.response?.status", error?.response);
+    // console.log("error?.response?.status", error?.response);
     if (error.response.status !== 401) {
       return Promise.reject(error);
     }
@@ -158,7 +157,7 @@ axios.interceptors.response.use(
       // Retry original request
       return axios(originalRequest);
     } catch (refreshError) {
-      console.error("Token refresh failed:", refreshError);
+      //console.error("Token refresh failed:", refreshError);
 
       // Reject all queued requests
       processQueue(refreshError, null);

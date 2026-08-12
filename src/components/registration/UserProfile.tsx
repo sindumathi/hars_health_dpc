@@ -29,7 +29,7 @@ export default function UserProfile() {
     const userData = form?.state?.values?.personalDetails;
     const finalData =
       form?.state?.values?.personalDetails || initialRegistrationState;
-    console.log("finalData", finalData);
+    //console.log("finalData", finalData);
     await dispatch(createPatientUserProfile(finalData));
     setEditOpen(false);
   };
