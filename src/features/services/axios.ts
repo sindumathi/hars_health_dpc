@@ -7,9 +7,9 @@ import Axios, {
 import { store } from "../redux/store";
 import { clearAccessToken, setAccessToken } from "../redux/slice/authSlice";
 
-// const API_URL = process.env.NEXT_PUBLIC_API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 //const API_URL="http://localhost:8000"
-const API_URL = "http://localhost:3000";
+//const API_URL = "http://localhost:3000";
 
 // Axios instances
 
