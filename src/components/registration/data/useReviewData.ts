@@ -13,7 +13,6 @@ export default function useReviewData() {
     { label: "Date of birth", value: registration?.dateOfBirth },
     { label: "Gender", value: registration?.gender },
     { label: "Phone number", value: registration?.phoneNumber },
-    { label: "Gender", value: registration?.gender },
     {
       label: "Emergency Contact Name",
       value: registration?.emergencyContact?.emergencyContactName,

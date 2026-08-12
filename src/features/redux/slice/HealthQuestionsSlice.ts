@@ -10,6 +10,7 @@ export const initialQuestionState: HealthQuestionsState = {
 const healthQuestionSlice = createSlice({
   name: "healthQuestions",
   initialState: initialQuestionState,
+  //initialState: initialData,
   reducers: {
     createHealthQuestion: (state, action) => {
       Object.assign(state, action.payload);

@@ -1,4 +1,5 @@
 import React from "react";
+import { useMemo } from "react";
 import type { AnyFieldApi } from "@tanstack/react-form";
 import { ExistingConditionsData } from "../../features/types/patientRegistrationState.type";
 interface CheckBoxFieldProps {

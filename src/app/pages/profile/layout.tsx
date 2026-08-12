@@ -3,12 +3,9 @@ import SideBar from "@/src/components/uiComponents/SideBar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
-      {/* <SideBar /> */}
-      <main>
-        {/* <SidebarTrigger /> */}
-        {children}
-      </main>
-    </SidebarProvider>
+    <main>
+      {/* <SidebarTrigger /> */}
+      {children}
+    </main>
   );
 }

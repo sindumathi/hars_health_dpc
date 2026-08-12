@@ -12,6 +12,7 @@ import TextBox from "../uiComponents/TextBox";
 import Button from "../uiComponents/Button";
 import { MdOutlineClear } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { useAppSelector } from "@/src/features/redux/hooks";
 
 const TABLE_HEADERS = ["Medications", "Dose", "Frequency"];
 const MEDICATION_FIELD = { medName: "", medDosage: "", medFrequency: "" };
@@ -20,6 +21,7 @@ type FormProp = {
 };
 export default function MedicalHistory({ form }: FormProp) {
   const { Field } = form;
+  const userMedHistory = useAppSelector((state) => state.medHistory);
   const [allergyInput, setAllergyInput] = useState("");
   const handleAddAllergies = (field: AnyFieldApi) => {
     const allergy = allergyInput.trim();
@@ -56,6 +58,7 @@ export default function MedicalHistory({ form }: FormProp) {
   const displayTextFieldInTable = (field: AnyFieldApi) => {
     return <TextBox variant={"primary"} textField={field} />;
   };
+
   return (
     <div className="mx-auto p-8">
       <p className=" pb-1">
@@ -67,7 +70,11 @@ export default function MedicalHistory({ form }: FormProp) {
         </span>
       </p>
       {/* Existing conditions --------------------------------*/}
-      <Field name={`medicalHistory.existingConditions`} mode="array">
+      <Field
+        name={`medicalHistory.existingConditions`}
+        mode="array"
+        defaultValue={userMedHistory.existingConditions}
+      >
         {(field: AnyFieldApi) => (
           <>
             {medicalHistoryData.map((condition) => (
@@ -87,7 +94,12 @@ export default function MedicalHistory({ form }: FormProp) {
         )}
       </Field>
       {/*Allergies---------------------------*/}
-      <Field name={`medicalHistory.allergies`} mode="array" validators={{}}>
+      <Field
+        name={`medicalHistory.allergies`}
+        mode="array"
+        validators={{}}
+        defaultValue={userMedHistory.allergies}
+      >
         {(field: AnyFieldApi) => (
           <div className="flex flex-col  gap-2 w-full">
             <div className="sub-header-text font-bold pb-2"> Allergies</div>
@@ -104,6 +116,11 @@ export default function MedicalHistory({ form }: FormProp) {
                   id={field.name}
                   value={allergyInput}
                   handleChange={setAllergyInput}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleAddAllergies(field);
+                    }
+                  }}
                   variant={"primary"}
                   placeholder=""
                 />
@@ -120,7 +137,11 @@ export default function MedicalHistory({ form }: FormProp) {
           </div>
         )}
       </Field>
-      <Field name="medicalHistory.medications" mode="array">
+      <Field
+        name="medicalHistory.medications"
+        mode="array"
+        defaultValue={userMedHistory.medications}
+      >
         {(field: AnyFieldApi) => (
           <>
             <table className="w-full border p-3 mt-4">
@@ -180,27 +201,35 @@ export default function MedicalHistory({ form }: FormProp) {
               </tbody>
             </table>
             <div className="mt-4">
-              <form.Subscribe selector={(state) => state.values.medications}>
-                {(medications) => (
-                  <Button
-                    variant={
-                      field?.state?.value?.length <= 0 ||
-                      (medications &&
+              <form.Subscribe
+                selector={(state) => state.values.medicalHistory.medications}
+              >
+                {(medications) => {
+                  {
+                    console.log("medications", field.state);
+                  }
+                  return (
+                    <Button
+                      variant={
+                        field?.state?.value?.length <= 0 ||
+                        (medications &&
+                          medications?.length > 0 &&
+                          medications[medications?.length - 1].medName.length >
+                            3)
+                          ? "primary"
+                          : "secondary"
+                      }
+                      onClick={() => handleAddMedication(field)}
+                      disabled={
+                        medications &&
                         medications?.length > 0 &&
-                        medications[medications?.length - 1].medName.length > 3)
-                        ? "primary"
-                        : "secondary"
-                    }
-                    onClick={() => handleAddMedication(field)}
-                    disabled={
-                      medications &&
-                      medications.length > 0 &&
-                      medications[medications?.length - 1].medName.length <= 3
-                    }
-                  >
-                    {"+ Add Medication"}
-                  </Button>
-                )}
+                        medications[medications?.length - 1].medName.length <= 3
+                      }
+                    >
+                      {"+ Add Medication"}
+                    </Button>
+                  );
+                }}
               </form.Subscribe>
             </div>
           </>

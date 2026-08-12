@@ -1,15 +1,17 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import TextBox from "../uiComponents/TextBox";
 import SelectBox from "../uiComponents/Select";
 import { genderData } from "../../data/selectData";
 import DatePicker from "../uiComponents/DatePicker";
 import type { AnyFieldApi } from "@tanstack/react-form";
+import { useAppSelector } from "@/src/features/redux/hooks";
 //import { QuestionnaireForm } from "@/src/app/pages/questionnaire/page";
 import { ReactFormExtendedApi } from "@tanstack/react-form";
 import { PatientRegistrationState } from "@/src/features/types/patientRegistrationState.type";
 import { personalDetailsSchema } from "./data/validationSchema";
 import { FieldWrapper } from "@/src/utils/formatters";
+import { fetchUsers } from "./DatabaseFetch";
 
 import { RegistrationFormType } from "./data/formType";
 
@@ -19,6 +21,15 @@ type FormProp = {
 
 export default function PersonalDetails({ form }: FormProp) {
   const { Field } = form;
+  const initialuserData = { name: "", dateOfBirth: "" };
+  const [user, setUser] = useState(initialuserData);
+  const userData = useAppSelector((state) => state.registration);
+  useEffect(() => {
+    const fetchUser = (async () => {
+      const user = await fetchUsers();
+      setUser(user);
+    })();
+  }, []);
 
   return (
     // <form
@@ -32,7 +43,7 @@ export default function PersonalDetails({ form }: FormProp) {
       <div className="grid grid-cols-2 gap-6 m-4">
         <Field
           name={`personalDetails.firstName`}
-          defaultValue=""
+          defaultValue={userData?.firstName}
           validators={{ onBlur: personalDetailsSchema.shape.name }}
         >
           {(field: AnyFieldApi) => (
@@ -54,7 +65,7 @@ export default function PersonalDetails({ form }: FormProp) {
         </Field>
         <Field
           name={`personalDetails.lastName`}
-          defaultValue=""
+          defaultValue={userData?.lastName}
           validators={{ onBlur: personalDetailsSchema.shape.name }}
         >
           {(field: AnyFieldApi) => (
@@ -76,7 +87,7 @@ export default function PersonalDetails({ form }: FormProp) {
         </Field>
         <Field
           name={`personalDetails.phoneNumber`}
-          defaultValue=""
+          defaultValue={userData?.phoneNumber}
           validators={{ onBlur: personalDetailsSchema.shape.phoneNumber }}
         >
           {(field: AnyFieldApi) => (
@@ -98,7 +109,7 @@ export default function PersonalDetails({ form }: FormProp) {
         </Field>
         <Field
           name={`personalDetails.patientId`}
-          defaultValue=""
+          defaultValue={userData.patientId}
           validators={{ onBlur: personalDetailsSchema.shape.patientId }}
         >
           {(field: AnyFieldApi) => (
@@ -119,7 +130,11 @@ export default function PersonalDetails({ form }: FormProp) {
           )}
         </Field>
 
-        <Field name={`personalDetails.dateOfBirth`} validators={{}}>
+        <Field
+          name={`personalDetails.dateOfBirth`}
+          defaultValue={user?.dateOfBirth}
+          validators={{}}
+        >
           {(field: AnyFieldApi) => (
             <DatePicker
               value={field?.state?.value ? field.state.value : ""}
@@ -133,6 +148,7 @@ export default function PersonalDetails({ form }: FormProp) {
         </Field>
         <Field
           name={`personalDetails.gender`}
+          defaultValue={userData?.gender}
           validators={{ onBlur: personalDetailsSchema.shape.gender }}
         >
           {(field: AnyFieldApi) => (
@@ -161,7 +177,7 @@ export default function PersonalDetails({ form }: FormProp) {
       <div className="grid grid-cols-2 gap-6">
         <Field
           name={`personalDetails.emergencyContact.emergencyContactName`}
-          defaultValue=""
+          defaultValue={userData?.emergencyContact?.emergencyContactName}
         >
           {(field: AnyFieldApi) => (
             <TextBox
@@ -175,7 +191,7 @@ export default function PersonalDetails({ form }: FormProp) {
         </Field>
         <Field
           name={`personalDetails.emergencyContact.relationship`}
-          defaultValue=""
+          defaultValue={userData?.emergencyContact?.relationship}
         >
           {(field: AnyFieldApi) => (
             <TextBox
@@ -189,7 +205,7 @@ export default function PersonalDetails({ form }: FormProp) {
         </Field>
         <Field
           name={`personalDetails.emergencyContact.contactNumber`}
-          defaultValue=""
+          defaultValue={userData?.emergencyContact?.contactNumber}
           validators={{ onBlur: personalDetailsSchema.shape.contactNumber }}
         >
           {(field: AnyFieldApi) => (

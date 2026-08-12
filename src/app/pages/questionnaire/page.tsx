@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Pattern } from "@/src/components/uiComponents/Stepper";
 import { useForm } from "@tanstack/react-form";
 import { useRouter, redirect } from "next/navigation";
@@ -53,6 +53,7 @@ export default function Questionnaire() {
   } = useFormDefaultValues();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState<number>(2);
+  const [saveStatus, setSaveStatus] = useState({});
   const totalSteps: number = steps.length;
   const formDefaultValue =
     currentStep === 2
@@ -64,6 +65,14 @@ export default function Questionnaire() {
           : currentStep === 5
             ? symptomsChecker
             : {};
+
+  useEffect(() => {
+    if (saveStatus && Object.keys(saveStatus).length === 0) return;
+    const cleanStatus = setTimeout(() => {
+      setSaveStatus({});
+    }, 4000);
+    return () => clearTimeout(cleanStatus);
+  }, [saveStatus]);
 
   const form = useForm({
     // defaultValues: { ...formDefaultValue },
@@ -106,16 +115,33 @@ export default function Questionnaire() {
 
         const finalData =
           form?.state?.values?.personalDetails || initialRegistrationState;
-        //console.log("finalData", finalData);
-        await dispatch(createPatientUserProfile(finalData));
+        console.log("finalData", finalData);
+        try {
+          await dispatch(createPatientUserProfile(finalData));
+          setSaveStatus({ message: "User Datails Saved" });
+        } catch (e) {
+          setSaveStatus({ error: "Error! while saving" });
+        }
       } else if (currentStep === 3) {
         const finalData =
           form?.state?.values?.medicalHistory || initialMedHistoryState;
-        await dispatch(createMedicalHistory(finalData));
+        console.log("finalData", finalData);
+        try {
+          await dispatch(createMedicalHistory(finalData));
+          setSaveStatus({ message: "Medical History Saved" });
+        } catch (e) {
+          setSaveStatus({ error: "Error! while saving" });
+        }
       } else if (currentStep === 4) {
         const finalData =
           form?.state?.values?.healthQuestions || initialQuestionState;
-        await dispatch(createHealthQuestion(finalData));
+        console.log("finalData", finalData);
+        try {
+          await dispatch(createHealthQuestion(finalData));
+          setSaveStatus({ message: "Saved" });
+        } catch (e) {
+          setSaveStatus({ error: "Error! while saving" });
+        }
       }
     } catch (e) {
       console.error(e);
@@ -144,6 +170,7 @@ export default function Questionnaire() {
             handlePrevious={handlePrevious}
             handleSave={handleSave}
             handleNext={handleNext}
+            saveStatus={saveStatus}
             isSubmitting={isSubmitting}
             handleFormSubmit={handleFormSubmit}
             currentStep={currentStep}

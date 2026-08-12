@@ -74,7 +74,7 @@ export default function HealthQuestions({ form }: FormProp) {
                         </div>
                       ))
                     ) : (
-                      <div className="w-4/5 px-3 py-1.5">
+                      <div className="w-4/5 px-2 py-1.5">
                         <TextArea variant="primary" textAreaField={subField} />
                       </div>
                     )

@@ -37,5 +37,7 @@ function FieldWrapper({
   );
 }
 
-function formatAck(data: string) {}
+function errorDisplaySmall(error: string) {
+  return <div className="text-xs text-red-500">{error}</div>;
+}
 export { formatDate, FieldWrapper };

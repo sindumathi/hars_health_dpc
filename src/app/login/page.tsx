@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter, redirect } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import { useDispatch, useStore } from "react-redux";
+import axios from "axios";
 import {
   setAccessToken,
   clearAccessToken,
@@ -16,7 +17,7 @@ import { useAppSelector } from "@/src/features/redux/hooks";
 
 import { z } from "zod";
 
-interface LoginFormData {
+export interface LoginFormData {
   username: string;
   password: string;
   dateOfBirth: Date | string;
@@ -27,10 +28,20 @@ const dobSchema = z.object({
   }),
 });
 export default function LoginForm() {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSignup, setIsSignup] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const store = useStore();
   const accessToken = useAppSelector((state) => state?.auth?.accessToken);
+  useEffect(() => {
+    if (!errorMessage) return;
+    const errorTimer = setTimeout(() => {
+      setErrorMessage("");
+    }, 4000);
+    return () => clearTimeout(errorTimer);
+  }, [errorMessage]);
+
   const { Field, handleSubmit } = useForm({
     defaultValues: {
       username: "",
@@ -45,22 +56,58 @@ export default function LoginForm() {
       //   password: "firstUser123",
       //   dateOfBirth: "08/14/1995",
       // };
-      try {
-        const response = await Axios.post("/api/auth", value);
-        const data = response?.data;
-        const authData = {
-          accessToken: data?.accessToken,
-          userName: data?.userName,
-          isAuthenticated: true,
-        };
-        dispatch(setAccessToken(authData));
-        router.push("/pages/welcome");
-      } catch (error) {
-        console.log("Login failed", error);
+
+      if (isSignup) {
+        handleSignUpSubmit(value);
+        setIsSignup(false);
+      } else {
+        handleLoginSubmit(value);
       }
     },
   });
 
+  const handleLoginSubmit = async (value: LoginFormData) => {
+    try {
+      const response = await Axios.post("/api/auth", value);
+      console.log("response", response);
+      const data = response?.data;
+      const authData = {
+        accessToken: data?.accessToken,
+        userName: data?.userName,
+        isAuthenticated: true,
+      };
+      dispatch(setAccessToken(authData));
+      router.push("/pages/welcome");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error?.response?.data?.message;
+        setErrorMessage(message);
+      } else {
+        console.log("Login failed", error);
+      }
+    }
+  };
+
+  const handleSignupClick = () => {
+    setIsSignup(true);
+  };
+
+  const handleSignUpSubmit = async (value: LoginFormData) => {
+    try {
+      const response = await Axios.post("/api/signUp", value);
+      const data = response?.data;
+      if (data.success === true) {
+        handleLoginSubmit(value);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error?.response?.data?.message;
+        setErrorMessage(message);
+      } else {
+        console.log("Login failed", error);
+      }
+    }
+  };
   return (
     <div className="container *:space-y-5 min-h-100   align-middle justify-center max-w-md mx-auto px-10 border border-gray-300 rounded-lg shadow-md p-8">
       <div className="text-center pb-10 text-xl text-blue-800"> Login </div>
@@ -158,11 +205,28 @@ export default function LoginForm() {
             </FieldWrapper>
           )}
         </Field>
+        {errorMessage && (
+          <div className="text-xs whitespace-pre-line text-red-500">
+            {errorMessage}
+          </div>
+        )}
+        <div className="flex flex-row gap-4 items-center justify-center">
+          {isSignup ? (
+            <Button variant={"primary"} onClick={handleSubmit}>
+              Signup
+            </Button>
+          ) : (
+            <Button variant={"primary"} onClick={handleSubmit}>
+              Login
+            </Button>
+          )}
 
-        <div className="flex items-center justify-center">
-          <Button variant={"primary"} onClick={handleSubmit}>
-            Login
-          </Button>
+          <div
+            className="text-md text-blue-800 cursor-pointer "
+            onClick={handleSignupClick}
+          >
+            Signup?
+          </div>
         </div>
         <div className="text-sm text-center cursor-pointer hover:text-blue-600 focus:outline-none focus:underline">
           Forgot Password?

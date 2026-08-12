@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, SubmitEvent, MouseEvent } from "react";
 
 import classNames from "classnames";
+import { LoginFormData } from "@/src/app/login/page";
 export type EventType =
   | React.MouseEvent<HTMLButtonElement | HTMLFormElement>
   | React.MouseEvent<HTMLButtonElement | HTMLFormElement, MouseEvent>

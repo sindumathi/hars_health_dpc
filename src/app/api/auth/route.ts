@@ -13,7 +13,6 @@ export interface User {
 }
 
 export async function POST(request: NextRequest) {
-  const user = (await prisma.users.findFirst()) as User;
   const returnJsonResponse = (
     success: boolean,
     message: string,
@@ -24,12 +23,19 @@ export async function POST(request: NextRequest) {
   };
   try {
     const { username, password, dateOfBirth } = await request.json();
-
+    const user = await prisma.users.findUnique({
+      where: { name: username },
+    });
+    //const user = (await prisma.users.findFirst()) as User;
     let message = "";
 
     //check for field empty and return error
-    if (!username || !password || !dateOfBirth) {
-      message = "Username, password, and date of birth are required.";
+    if (!username || !password || !dateOfBirth || !user) {
+      if (!user) {
+        message = "User not found";
+      } else {
+        message = "Username, password, and date of birth are required.";
+      }
       return returnJsonResponse(false, message, 400);
     }
 
@@ -41,7 +47,17 @@ export async function POST(request: NextRequest) {
       !isPasswordMatch ||
       dateOfBirth !== user.date_of_birth
     ) {
-      message = "Invalid credentials.";
+      message = "Please enter valid credentials!\n";
+      if (username !== user.name) {
+        message += " *Username does not exist. \n";
+      }
+      if (!isPasswordMatch) {
+        message += " *Password does not match. \n";
+      }
+      if (dateOfBirth !== user.date_of_birth) {
+        message += " *Please enter correct date of birth.\n";
+      }
+
       return returnJsonResponse(false, message, 401);
     }
 

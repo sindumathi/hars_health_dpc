@@ -11,6 +11,14 @@ export const RegistrationForm = () =>
   useForm({
     defaultValues: initialRegistrationState,
   });
+
+export const ParentRegistrationForm = () => {
+  useForm({
+    defaultValues: {
+      personalDetails: initialRegistrationState,
+    },
+  });
+};
 const MEDICATION_FIELD = { medName: "", medDosage: "", medFrequency: "" };
 const medicalFormFieldState = {
   medicalHistory: initialMedHistoryState,
@@ -56,5 +64,8 @@ export type ChildrenField = {
 };
 export type QuestionnaireFormType = ReturnType<typeof QuestionnaireForm>;
 export type RegistrationFormType = ReturnType<typeof RegistrationForm>;
+export type ParentRegistrationFormType = ReturnType<
+  typeof ParentRegistrationForm
+>;
 export type HistoryFormType = ReturnType<typeof MedicalHistoryForm>;
 export type QuestionFormType = ReturnType<typeof HealthQuestionForm>;

@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
       userId: payload?.userId,
       name: payload?.name,
     });
-
     //Response
     const message = "Access token generated";
     const response = NextResponse.json(

@@ -21,12 +21,12 @@ export default function TextArea(props: TextAreaProps) {
   } = props;
   const [tAreaValue, setTAreaValue] = useState("");
   const inputClassNames = classNames(
-    "w-full resize-none min-h-[4lh] ",
+    "w-full resize-none min-h-[2lh] ",
     `${className}`,
     {
       "rounded-md border border-gray-300 px-3 py-2 text-sm text-neutral-900":
         variant === "normal",
-      "rounded-lg border border-gray-300 px-4 py-2 transition focus:border-blue-300 focus:ring-1 focus:ring-blue-200 focus:placeholder-transparent":
+      "rounded-lg border border-gray-300 px-3 py-1 transition focus:border-blue-300 focus:ring-1 focus:ring-blue-200 focus:placeholder-transparent":
         variant === "primary",
     },
   );

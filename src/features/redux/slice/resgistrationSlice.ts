@@ -16,10 +16,10 @@ export const initialRegistrationState: PatientRegistrationState = {
   phoneNumber: "",
   emergencyContact: emContact,
 };
-
 const registrationSlice = createSlice({
   name: "registration",
   initialState: initialRegistrationState,
+  //initialState: initialData,
   reducers: {
     createPatientUserProfile: (state, action) => {
       Object.assign(state, action.payload);

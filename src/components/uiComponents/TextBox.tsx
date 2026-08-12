@@ -58,14 +58,16 @@ const TextBox = function (props: TextBoxProps) {
         {...rest}
       />
       <div
-        className="absolute right-0  top-1/2 pr-3 -translate-y-1/2 "
+        className="absolute right-0  top-1/2 mt-2 pr-3 -translate-y-1/2 "
         onClick={handlePasswordDisplay}
       >
         {showPassword
           ? passwordField && (
-              <HiOutlineEyeOff className="h-5 w-5 text-gray-400" />
+              <HiOutlineEyeOff className="h-5 w-5 text-gray-400 mt-2" />
             )
-          : passwordField && <HiOutlineEye className="h-5 w-5 text-gray-400" />}
+          : passwordField && (
+              <HiOutlineEye className="h-5 w-5 text-gray-400 mt-2" />
+            )}
       </div>
     </div>
   );

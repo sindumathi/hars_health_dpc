@@ -40,9 +40,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          <HeaderPage title="HK General Hospital" />
-          <div className="w-full flex flex-col md:w-3/4 mx-auto px-4">
-            {children}
+          <div className="flex flex-col">
+            <HeaderPage title="HK General Hospital" />
+            <div className="w-full flex flex-col  mx-auto px-4">{children}</div>
           </div>
         </Providers>
       </body>

@@ -3,37 +3,37 @@ import { ExistingConditionsData } from "@/src/features/types/patientRegistration
 import { nanoid } from "nanoid";
 export const medicalHistoryData = [
   {
-    id: nanoid(),
+    id: "HTA1",
     conditionName: "Hypertension (high blood pressure)",
     category: "Cardiovascular",
     isChecked: false,
   },
   {
-    id: nanoid(),
+    id: "DIAMEL1",
     conditionName: "Type 1 Diabetes",
     category: "Endocrine",
     isChecked: false,
   },
   {
-    id: nanoid(),
+    id: "DIAMEL2",
     conditionName: "Type 2 Diabetes",
     category: "Endocrine",
     isChecked: false,
   },
   {
-    id: nanoid(),
+    id: "AST1",
     conditionName: "Asthma",
     category: "Respiratory",
     isChecked: false,
   },
   {
-    id: nanoid(),
+    id: "HEART1",
     conditionName: "Heart disease",
     category: "Cardiovascular",
     isChecked: false,
   },
   {
-    id: nanoid(),
+    id: "THYD1",
     conditionName: "Thyroid disorder",
     category: "Endocrine",
     isChecked: false,

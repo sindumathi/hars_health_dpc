@@ -1,15 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { MedicalHistoryState } from "@/src/features/types/patientRegistrationState.type";
+import {
+  MedicalHistoryState,
+  MedicationsDataType,
+} from "@/src/features/types/patientRegistrationState.type";
 
 export const initialMedHistoryState: MedicalHistoryState = {
   existingConditions: [],
   allergies: [],
-  medications: [],
+  medications: [{ medName: "", medDosage: "", medFrequency: "" }],
 };
 
 const medicalHistorySlice = createSlice({
   name: "medHistory",
   initialState: initialMedHistoryState,
+  //initialState: initialData,
   reducers: {
     createMedicalHistory: (state, action) => {
       Object.assign(state, action.payload);

@@ -1,4 +1,8 @@
 import Button from "@/src/components/uiComponents/Button";
+type saveStatusType = {
+  message?: string;
+  error?: string;
+};
 type NavProps = {
   currentStep: number;
   totalSteps: number;
@@ -6,6 +10,7 @@ type NavProps = {
   handleSave: () => void;
   handleNext: () => void;
   handleFormSubmit: () => void;
+  saveStatus?: saveStatusType;
   isSubmitting?: boolean;
 };
 export default function QuestionnaireNavigation(props: NavProps) {
@@ -16,6 +21,7 @@ export default function QuestionnaireNavigation(props: NavProps) {
     handleSave,
     handleNext,
     handleFormSubmit,
+    saveStatus,
     isSubmitting,
   } = props;
   return (
@@ -33,13 +39,22 @@ export default function QuestionnaireNavigation(props: NavProps) {
             Submit
           </Button>
         ) : (
-          <Button
-            variant={"primary"}
-            onClick={handleSave}
-            //disabled={currentStep == 2}
-          >
-            Save
-          </Button>
+          <>
+            {saveStatus && (
+              <div
+                className={`text-xs whitespace-pre-line ${saveStatus?.error ? "text-red-500" : "text-green-500"}`}
+              >
+                {saveStatus.error || saveStatus.message}
+              </div>
+            )}
+            <Button
+              variant={"primary"}
+              onClick={handleSave}
+              //disabled={currentStep == 2}
+            >
+              Save
+            </Button>
+          </>
         )}
         <Button
           variant={currentStep === totalSteps ? "secondary" : "primary"}
