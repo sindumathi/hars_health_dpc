@@ -3,14 +3,18 @@ import { cookiesDataForResponse } from "../../lib/session";
 import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 export async function POST() {
   try {
-    const response = NextResponse.json(
+    const response = NextResponse.json({
+      message: "Logged out successfully",
+    });
+    //remove Refresh token in cookie
+    response.cookies.set({
+      ...cookiesDataForResponse,
+      value: "",
+    } as ResponseCookie);
+    return NextResponse.json(
       { success: true, message: "Logged out successfully" },
       { status: 200 },
     );
-    //remove Refresh token in cookie
-    response.cookies.delete("refresh_token");
-
-    return response;
   } catch (error) {
     return NextResponse.json(
       {
