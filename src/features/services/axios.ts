@@ -5,135 +5,44 @@ import Axios, {
 } from "axios";
 
 import { store } from "../redux/store";
-import { clearAccessToken, setAccessToken } from "../redux/slice/authSlice";
+import { setAccessToken } from "../redux/slice/authSlice";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 //const API_URL="http://localhost:8000"
 //const API_URL = "http://localhost:3000";
+let refreshPromise: Promise<string> | null = null;
 
-// Axios instances
+export function getAccessToken() {
+  const state = store.getState();
+  const token = state?.auth?.accessToken;
+  return token;
+}
 
+export function isLoggedIn() {
+  const token = getAccessToken();
+  return !!token;
+}
+
+// export function redirectToLogin() {
+//   clearAccessToken();
+//   redirect("/login");
+// }
+
+// ---------- axios instance ----------
 export const axios: AxiosInstance = Axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
+async function refreshAccessToken() {
+  if (refreshPromise) {
+    return refreshPromise;
+  }
 
-const refreshClient = Axios.create({
-  baseURL: API_URL,
-  withCredentials: true,
-});
-
-// --------------------------------------------------
-// Refresh queue
-// --------------------------------------------------
-
-type QueueItem = {
-  resolve: (token: string) => void;
-  reject: (error: unknown) => void;
-};
-
-let isRefreshing = false;
-let failedQueue: QueueItem[] = [];
-
-const processQueue = (error: unknown, token: string | null = null): void => {
-  failedQueue.forEach(({ resolve, reject }) => {
-    if (error) {
-      reject(error);
-    } else if (token) {
-      resolve(token);
-    }
-  });
-
-  failedQueue = [];
-};
-// Request interceptor--------------------------------------------------
-
-axios.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const state = store.getState();
-    const token = state?.auth?.accessToken;
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    console.log("config", config);
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
-
-// -----------------------Response interceptor---------------------------
-
-axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-
-  async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & {
-      _retry?: boolean;
-    };
-    if (!error.response) {
-      // console.error("Network error:", error.message);
-      return Promise.reject(error);
-    }
-    //does not try refresh token if it is from login url
-    if (
-      originalRequest?.url === "/api/auth" ||
-      originalRequest?.url === "/api/resetPassword"
-    ) {
-      return Promise.reject(error);
-    }
-    // ----------------401------------------------------
-    // console.log("error?.response?.status", error?.response);
-    if (error.response.status !== 401) {
-      return Promise.reject(error);
-    }
-
-    console.log("original url-------------", originalRequest?.url);
-    if (originalRequest.url?.includes("/api/refresh")) {
-      clearAccessToken();
-      return Promise.reject(error);
-    }
-
-    if (originalRequest._retry) {
-      return Promise.reject(error);
-    }
-
-    // ----------------------------------------------
-    // Refresh already in progress
-    // ----------------------------------------------
-
-    if (isRefreshing) {
-      return new Promise<string>((resolve, reject) => {
-        failedQueue.push({
-          resolve,
-          reject,
-        });
-      })
-        .then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-
-          return axios(originalRequest);
-        })
-        .catch((queueError) => {
-          return Promise.reject(queueError);
-        });
-    }
-
-    // ----------------------------------------------
-    // Start refresh
-    // ----------------------------------------------
-
-    originalRequest._retry = true;
-    isRefreshing = true;
-
-    try {
-      const response = await refreshClient.post("/api/refresh");
-
-      const { data } = response;
+  refreshPromise = Axios.post("/api/refresh", null, {
+    withCredentials: true,
+  })
+    .then((res) => {
+      const { data } = res;
       const authData = {
         accessToken: data?.accessToken,
         userName: data?.userName,
@@ -145,29 +54,69 @@ axios.interceptors.response.use(
       }
 
       setAccessToken(authData);
+      return data?.access_token;
+    })
+    .catch((err) => {
+      throw err;
+    })
+    .finally(() => {
+      refreshPromise = null;
+    });
 
-      // Resolve all queued requests
-      processQueue(null, data?.accessToken);
+  return refreshPromise;
+}
+// ---------- request interceptor ----------
+axios.interceptors.request.use(
+  async (config) => {
+    const url = config.url || "";
+    const isLoginRoute = /^\/?api\/(auth|resetPassword|refresh)/.test(url);
 
-      // Update original request
-      originalRequest.headers.Authorization = `Bearer ${data?.accessToken}`;
-
-      // Retry original request
-      return axios(originalRequest);
-    } catch (refreshError) {
-      //console.error("Token refresh failed:", refreshError);
-
-      // Reject all queued requests
-      processQueue(refreshError, null);
-
-      // Clear authentication
-      clearAccessToken();
-
-      return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
+    if (!isLoginRoute) {
+      if (isLoggedIn()) {
+        config.headers.Authorization = `Bearer ${getAccessToken()}`;
+        return config;
+      }
+      try {
+        const refreshToken = refreshAccessToken();
+        config.headers.Authorization = `Bearer ${refreshToken}`;
+        return config;
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
+    const token = getAccessToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
   },
+  (error) => Promise.reject(error),
 );
 
+// ---------- response interceptor----------
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    const isLoginRoute = /^\/?api\/(auth|resetPassword|refresh)/.test(
+      originalRequest?.url,
+    );
+    if (
+      error.response?.status === 401 &&
+      !isLoginRoute &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+      try {
+        const newToken = await refreshAccessToken();
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return axios(originalRequest); // retry the original request
+      } catch {
+        return Promise.reject(error);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 export default axios;
