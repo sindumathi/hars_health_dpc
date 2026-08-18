@@ -44,6 +44,7 @@ export default function PagesLayout({
         }
       } catch (error) {
         console.error("Refresh failed:", error);
+        router.push("/login");
         //router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
       }
     };
