@@ -56,7 +56,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
+    console.log("config", config);
     return config;
   },
   (error) => {
@@ -80,7 +80,10 @@ axios.interceptors.response.use(
       return Promise.reject(error);
     }
     //does not try refresh token if it is from login url
-    if (originalRequest?.url === "/api/auth") {
+    if (
+      originalRequest?.url === "/api/auth" ||
+      originalRequest?.url === "/api/resetPassword"
+    ) {
       return Promise.reject(error);
     }
     // ----------------401------------------------------
@@ -89,16 +92,11 @@ axios.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // ----------------------------------------------
-    // Don't refresh the refresh endpoint
-    // ----------------------------------------------
-
+    console.log("original url-------------", originalRequest?.url);
     if (originalRequest.url?.includes("/api/refresh")) {
       clearAccessToken();
       return Promise.reject(error);
     }
-
-    // ----------Prevent infinite retry------------------------------------
 
     if (originalRequest._retry) {
       return Promise.reject(error);
