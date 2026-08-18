@@ -14,6 +14,7 @@ import Button from "@/src/components/uiComponents/Button";
 import DatePicker from "@/src/components/uiComponents/DatePicker";
 import { FieldWrapper } from "@/src/utils/formatters";
 import { useAppSelector } from "@/src/features/redux/hooks";
+import ResetPassword from "./ResetPassword";
 
 import { z } from "zod";
 
@@ -28,7 +29,11 @@ const dobSchema = z.object({
   }),
 });
 export default function LoginForm() {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState({
+    message: "",
+    color: "red",
+  });
+  const [resetPassword, setResetPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -64,7 +69,9 @@ export default function LoginForm() {
       }
     },
   });
-
+  const handleResetPassword = () => {
+    setResetPassword(true);
+  };
   const handleLoginSubmit = async (value: LoginFormData) => {
     try {
       const response = await Axios.post("/api/auth", value);
@@ -79,7 +86,7 @@ export default function LoginForm() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error?.response?.data?.message;
-        setErrorMessage(message);
+        setErrorMessage({ message, color: "red" });
       } else {
         console.log("Login failed", error);
       }
@@ -102,79 +109,58 @@ export default function LoginForm() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error?.response?.data?.message;
-        setErrorMessage(message);
+        setErrorMessage({ message, color: "red" });
       } else {
         console.log("Login failed", error);
       }
     }
   };
   return (
-    <div className="container *:space-y-5 min-h-100   align-middle justify-center max-w-md mx-auto px-10 border border-gray-300 rounded-lg shadow-md p-8">
-      <div className="text-center pb-10 text-xl text-blue-800"> Login </div>
+    <div className="container *:space-y-5 min-h-100 mt-15 items-center justify-center max-w-md mx-auto px-10 border border-gray-300 rounded-lg shadow-md p-8">
+      <div className="text-center pb-10 text-xl text-blue-800">
+        {" "}
+        {resetPassword ? "Reset Password" : "Login"}
+      </div>
       <div
         className={`transition-opacity duration-300 ease-in-out ${
-          errorMessage ? "opacity-100" : "opacity-0 pointer-events-none"
+          errorMessage?.message
+            ? "opacity-100"
+            : "opacity-0 pointer-events-none"
         }`}
       >
-        {errorMessage && (
-          <div className="text-xs whitespace-pre-line text-red-500 bg-red-100 p-3">
-            {errorMessage}
+        {errorMessage?.message && (
+          <div
+            className={`text-xs whitespace-pre-line text-${errorMessage?.color}-500 bg-${errorMessage?.color}-100 p-3`}
+          >
+            {errorMessage?.message}
           </div>
         )}
       </div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          handleSubmit();
-        }}
-      >
-        <Field
-          name="username"
-          validators={{
-            onChange: z
-              .string()
-              .trim()
-              .min(1, "Username cant be empty")
-              .min(2, "Minimum 2 characters"),
+      {resetPassword ? (
+        <ResetPassword
+          setResetPassword={setResetPassword}
+          setLoginErrorMessage={setErrorMessage}
+        />
+      ) : (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleSubmit();
           }}
         >
-          {(field) => (
-            <FieldWrapper
-              error={
-                field.state.meta.isTouched && field.state.meta.errors.length > 0
-                  ? field.state.meta.errors[0]?.message
-                  : undefined
-              }
-            >
-              <TextBox
-                label="Username"
-                textField={field}
-                variant={"primary"}
-                placeholder="username"
-              />
-            </FieldWrapper>
-          )}
-        </Field>
-
-        <Field
-          name="password"
-          validators={{
-            onChange: z
-              .string()
-              .trim()
-              .min(1, "Password cant be empty")
-              .min(8, "Password is too short")
-              .refine(
-                (val) => /^(?=.*\d)(?=.*[A-Z]).+$/.test(val),
-                "Include atleast one number and uppercase letter",
-              ),
-          }}
-        >
-          {(field) => (
-            <div className="relative">
+          <Field
+            name="username"
+            validators={{
+              onChange: z
+                .string()
+                .trim()
+                .min(1, "Username cant be empty")
+                .min(2, "Minimum 2 characters"),
+            }}
+          >
+            {(field) => (
               <FieldWrapper
-                label="Password"
                 error={
                   field.state.meta.isTouched &&
                   field.state.meta.errors.length > 0
@@ -183,63 +169,103 @@ export default function LoginForm() {
                 }
               >
                 <TextBox
-                  passwordField={true}
+                  label="Username"
                   textField={field}
                   variant={"primary"}
-                  placeholder="password"
+                  placeholder="username"
                 />
               </FieldWrapper>
-            </div>
-          )}
-        </Field>
-
-        <Field
-          name="dateOfBirth"
-          validators={{
-            onSubmit: ({ value }) =>
-              !value ? "Date cannot be empty" : undefined,
-          }}
-        >
-          {(field) => (
-            <FieldWrapper
-              error={
-                field.state.meta.isTouched && field.state.meta.errors.length > 0
-                  ? field.state.meta.errors[0]
-                  : undefined
-              }
-            >
-              <DatePicker
-                field={field}
-                label="Date of birth"
-                placeholder="Choose date"
-              />
-            </FieldWrapper>
-          )}
-        </Field>
-
-        <div className="flex flex-row gap-4 items-center justify-center">
-          <div>
-            {isSignup ? (
-              <Button variant={"primary"} onClick={handleSubmit}>
-                Signup
-              </Button>
-            ) : (
-              <Button variant={"primary"} onClick={handleSubmit}>
-                Login
-              </Button>
             )}
+          </Field>
+
+          <Field
+            name="password"
+            validators={{
+              onChange: z
+                .string()
+                .trim()
+                .min(1, "Password cant be empty")
+                .min(8, "Password is too short")
+                .refine(
+                  (val) => /^(?=.*\d)(?=.*[A-Z]).+$/.test(val),
+                  "Include atleast one number and uppercase letter",
+                ),
+            }}
+          >
+            {(field) => (
+              <div className="relative">
+                <FieldWrapper
+                  label="Password"
+                  error={
+                    field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0
+                      ? field.state.meta.errors[0]?.message
+                      : undefined
+                  }
+                >
+                  <TextBox
+                    passwordField={true}
+                    textField={field}
+                    variant={"primary"}
+                    placeholder="password"
+                  />
+                </FieldWrapper>
+              </div>
+            )}
+          </Field>
+
+          <Field
+            name="dateOfBirth"
+            validators={{
+              onSubmit: ({ value }) =>
+                !value ? "Date cannot be empty" : undefined,
+            }}
+          >
+            {(field) => (
+              <FieldWrapper
+                error={
+                  field.state.meta.isTouched &&
+                  field.state.meta.errors.length > 0
+                    ? field.state.meta.errors[0]
+                    : undefined
+                }
+              >
+                <DatePicker
+                  field={field}
+                  label="Date of birth"
+                  placeholder="Choose date"
+                />
+              </FieldWrapper>
+            )}
+          </Field>
+
+          <div className="flex flex-row gap-4 items-center justify-center">
+            <div>
+              {isSignup ? (
+                <Button variant={"primary"} onClick={handleSubmit}>
+                  Signup
+                </Button>
+              ) : (
+                <Button variant={"primary"} onClick={handleSubmit}>
+                  Login
+                </Button>
+              )}
+            </div>
+            <div
+              className="text-md text-blue-800 cursor-pointer "
+              onClick={handleSignupClick}
+            >
+              {isSignup ? "Login" : "Signup"}
+            </div>
           </div>
           <div
-            className="text-md text-blue-800 cursor-pointer "
-            onClick={handleSignupClick}
+            className="text-sm text-center cursor-pointer hover:text-blue-600 focus:outline-none focus:underline"
+            onClick={handleResetPassword}
           >
-            {isSignup ? "Login" : "Signup"}
+            Forgot Password?
           </div>
-        </div>
-        <div className="text-sm text-center cursor-pointer hover:text-blue-600 focus:outline-none focus:underline">
-          Forgot Password?
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 }
