@@ -13,8 +13,8 @@ export default function HeaderPage({ title }: { title: string }) {
         <div className="w-0 h-0 border-r-[50px] border-r-transparent border-b-[80px] border-b-sky-800"></div>
         <div className="absolute top-5 bottom-0 max-w-sm mt-4 max-h-3 bg-sky-500 w-[100%]"></div>
         <div className="absolute top-10 bottom-0 max-w-sm mt-4 max-h-3 bg-sky-500 px-150"></div>
-        <div className="flex items-center justify-center gap-4 p-4 text-sky-800 absolute mx-auto">
-          <div className="w-full  top-0 lg:static mx-auto text-2xl font-extrabold">
+        <div className="relative flex items-center justify-center gap-4 p-4 text-sky-800 absolute mx-auto">
+          <div className="relative z-10 text-2xl font-extrabold text-sky-800 text-center">
             {title}
           </div>
         </div>
