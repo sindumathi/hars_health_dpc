@@ -30,7 +30,7 @@ export default function PagesLayout({
         const data = res.data;
 
         if (data?.accessToken) {
-          dispatch(
+          await dispatch(
             setAccessToken({
               accessToken: data.accessToken,
               userName: data.userName,

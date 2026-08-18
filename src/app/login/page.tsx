@@ -81,7 +81,7 @@ export default function LoginForm() {
         userName: data?.userName,
         isAuthenticated: true,
       };
-      dispatch(setAccessToken(authData));
+      await dispatch(setAccessToken(authData));
       router.push("/pages/welcome");
     } catch (error) {
       if (axios.isAxiosError(error)) {
