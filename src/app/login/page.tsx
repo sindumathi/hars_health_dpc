@@ -47,7 +47,7 @@ export default function LoginForm() {
   //   return () => clearTimeout(errorTimer);
   // }, [errorMessage]);
 
-  const { Field, handleSubmit } = useForm({
+  const { Field, handleSubmit, Subscribe } = useForm({
     defaultValues: {
       username: "",
       password: "",
@@ -238,26 +238,32 @@ export default function LoginForm() {
               </FieldWrapper>
             )}
           </Field>
+          <Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <div className="flex flex-row gap-4 items-center justify-center">
+                <div>
+                  {isSignup ? (
+                    <Button variant={"primary"} onClick={handleSubmit}>
+                      {isSubmitting ? "Sending..." : "Signup"}
+                    </Button>
+                  ) : (
+                    <Button variant={"primary"} onClick={handleSubmit}>
+                      {isSubmitting ? "Sending..." : "Login"}
+                    </Button>
+                  )}
+                </div>
+                <div
+                  className="text-md text-blue-800 cursor-pointer "
+                  onClick={handleSignupClick}
+                >
+                  {isSignup ? "Login" : "Signup"}
+                </div>
+              </div>
+            )}
+          </Subscribe>
 
-          <div className="flex flex-row gap-4 items-center justify-center">
-            <div>
-              {isSignup ? (
-                <Button variant={"primary"} onClick={handleSubmit}>
-                  Signup
-                </Button>
-              ) : (
-                <Button variant={"primary"} onClick={handleSubmit}>
-                  Login
-                </Button>
-              )}
-            </div>
-            <div
-              className="text-md text-blue-800 cursor-pointer "
-              onClick={handleSignupClick}
-            >
-              {isSignup ? "Login" : "Signup"}
-            </div>
-          </div>
           <div
             className="text-sm text-center cursor-pointer hover:text-blue-600 focus:outline-none focus:underline"
             onClick={handleResetPassword}

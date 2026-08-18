@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/src/features/redux/hooks";
 import { setAccessToken } from "@/src/features/redux/slice/authSlice";
-import Axios from "@/src/features/services/axios"; // your axios instance
+import Axios from "@/src/features/services/axios";
 
 export default function PagesLayout({
   children,
@@ -15,7 +15,8 @@ export default function PagesLayout({
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
-  const accessToken = useAppSelector((state) => state.auth.accessToken);
+  const accessToken = useAppSelector((state) => state?.auth?.accessToken);
+  console.log("test", !accessToken);
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
@@ -43,12 +44,12 @@ export default function PagesLayout({
         }
       } catch (error) {
         console.error("Refresh failed:", error);
-        router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
+        //router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
       }
     };
 
     checkAuth();
-  }, [accessToken, dispatch, router, pathname]);
+  }, [router, pathname]);
 
   if (isChecking) {
     return (
