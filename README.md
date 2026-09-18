@@ -9,7 +9,6 @@ This app is developed using React, redux, typescript, Nextjs and the backend dat
 ## TODO
 1.Reports 
 2.Apointments
-```
 ## Clone the repository
 (https://github.com/sindumathi/hars_health_dpc.git)
 ##  Navigate to the project
